@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SPIDER Protocol Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #1565C0;
+            border-bottom: 2px solid #1565C0;
+            padding-bottom: 10px;
+        }
+        .componente {
+            background: white;
+            padding: 16px;
+            margin-bottom: 14px;
+            border-radius: 6px;
+            border-left: 4px solid #1565C0;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 4px;
+            color: #263238;
+        }
+        .descripcion {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        button {
+            background-color: #1565C0;
+            color: white;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0D47A1;
+        }
+    </style>
+</head>
+<body>
+
+<h1>SPIDER Protocol Tool v2.0</h1>
+<p>Completa los componentes del protocolo SPIDER para generar tu cadena de búsqueda booleana.</p>
+
+<form th:action="@{/generar}" th:object="${searchRequest}" method="post">
+
+    <div class="componente">
+        <label>[S] Sample</label>
+        <p class="descripcion">¿Quién es la población de estudio? Ej: adolescentes, profesionales sanitarios</p>
+        <input type="text" th:field="*{sample}" placeholder="Tu término..."/>
+    </div>
+
+    <div class="componente">
+        <label>[P] Phenomenon of Interest</label>
+        <p class="descripcion">¿Qué fenómeno se investiga? Ej: burnout laboral, uso de redes sociales</p>
+        <input type="text" th:field="*{phenomenon}" placeholder="Tu término..."/>
+    </div>
+
+    <div class="componente">
+        <label>[I] Design</label>
+        <p class="descripcion">¿Qué diseño de investigación se busca? Ej: entrevista, grupo focal</p>
+        <input type="text" th:field="*{design}" placeholder="Tu término..."/>
+    </div>
+
+    <div class="componente">
+        <label>[D] Evaluation</label>
+        <p class="descripcion">¿Qué resultado se considera? Ej: calidad de vida, bienestar psicológico</p>
+        <input type="text" th:field="*{evaluation}" placeholder="Tu término..."/>
+    </div>
+
+    <div class="componente">
+        <label>[E] Research type</label>
+        <p class="descripcion">¿Qué tipo de investigación? Ej: cualitativa, cuantitativa, mixta</p>
+        <input type="text" th:field="*{researchType}" placeholder="Tu término..."/>
+    </div>
+
+    <div class="componente">
+        <label>[R] Research <span style="font-weight:normal; color:#888">(opcional)</span></label>
+        <p class="descripcion">¿Alguna restricción? Ej: España, 2010-2024, estudios en español</p>
+        <input type="text" th:field="*{research}" placeholder="Tu término..."/>
+    </div>
+
+    <button type="submit">Generar cadena de búsqueda →</button>
+
+</form>
+
+</body>
+</html>
