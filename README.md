@@ -15,11 +15,11 @@ Permite a investigadores construir estrategias de búsqueda booleana siguiendo e
 
 ## Cómo ejecutarlo
 
-```bash
-./mvnw spring-boot:run
-```
+Clona el repositorio y ejecuta:
 
-Abre el navegador en **http://localhost:8080**
+    ./mvnw spring-boot:run
+
+Abre el navegador en http://localhost:8080
 
 ## Versión consola
 
@@ -28,10 +28,10 @@ https://github.com/poncebollmann/spider-tool
 
 ## Motivación
 
-Proyecto desarrollado en el marco del **Curso de Especialización en Programación con Java** de **La Salle Barcelona**.
+Proyecto desarrollado en el marco del Curso de Especialización en Programación con Java de La Salle Barcelona, como ejercicio de aplicación práctica del lenguaje a un problema real de investigación.
 
 ## Autor
 
-**Felipe Ponce Bollmann** — Investigador y desarrollador en formación  
-Barcelona · La Salle  
+Felipe Ponce Bollmann — Investigador y desarrollador en formación
+Barcelona · La Salle
 poncebollmann@gmail.com
