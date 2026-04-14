@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Diagrama PRISMA 2020</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 750px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background-color: #f5f5f5;
+        }
+        h1 { color: #1565C0; border-bottom: 2px solid #1565C0; padding-bottom: 10px; }
+        h2 { font-size: 14px; color: white; padding: 8px 12px;
+            border-radius: 4px; margin: 24px 0 10px 0; }
+        h2.identificacion { background-color: #1565C0; }
+        h2.cribado        { background-color: #1565C0; }
+        h2.exclusion      { background-color: #E65100; }
+        h2.inclusion      { background-color: #2E7D32; }
+        .campo {
+            background: white;
+            padding: 14px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border-left: 4px solid #1565C0;
+        }
+        .campo.exclusion  { border-left-color: #E65100; }
+        .campo.inclusion  { border-left-color: #2E7D32; }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 4px;
+            color: #263238;
+            font-size: 13px;
+        }
+        .desc {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 6px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 7px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        button {
+            background-color: #2E7D32;
+            color: white;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 16px;
+            width: 100%;
+        }
+        button:hover { background-color: #1B5E20; }
+        nav { margin-bottom: 20px; font-size: 13px; }
+        nav a { color: #1565C0; text-decoration: none; margin-right: 16px; }
+        nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/">← SPIDER Tool</a>
+    <a href="/prisma">Diagrama PRISMA</a>
+</nav>
+
+<h1>Diagrama PRISMA 2020</h1>
+<p style="font-size:13px; color:#555;">
+    Introduce los datos de tu proceso de revisión sistemática.
+    El diagrama se generará siguiendo el estándar
+    <strong>PRISMA 2020 — Databases and Registers only</strong>.
+</p>
+
+<form th:action="@{/prisma/generar}" th:object="${prismaRequest}" method="post">
+
+    <!-- IDENTIFICATION -->
+    <h2 class="identificacion">IDENTIFICATION</h2>
+
+    <div class="campo">
+        <label>Records identified from Databases (n)</label>
+        <p class="desc">Total de registros encontrados en bases de datos (Scopus, PubMed, etc.)</p>
+        <input type="number" th:field="*{registrosBD}" min="0" value="0"/>
+    </div>
+
+    <div class="campo">
+        <label>Records identified from Registers (n)</label>
+        <p class="desc">Registros identificados en registros de ensayos u otras fuentes estructuradas.</p>
+        <input type="number" th:field="*{registrosRegistros}" min="0" value="0"/>
+    </div>
+
+    <div class="campo exclusion">
+        <label>Duplicate records removed (n)</label>
+        <p class="desc">Registros duplicados eliminados antes del cribado.</p>
+        <input type="number" th:field="*{duplicadosEliminados}" min="0" value="0"/>
+    </div>
+
+    <div class="campo exclusion">
+        <label>Records marked as ineligible by automation tools (n)</label>
+        <p class="desc">Registros excluidos automáticamente por herramientas de cribado asistido.</p>
+        <input type="number" th:field="*{excluidosAutomatizacion}" min="0" value="0"/>
+    </div>
+
+    <div class="campo exclusion">
+        <label>Records removed for other reasons (n)</label>
+        <p class="desc">Registros eliminados por otros motivos antes del cribado formal.</p>
+        <input type="number" th:field="*{excluidosOtrasRazones}" min="0" value="0"/>
+    </div>
+
+    <!-- SCREENING -->
+    <h2 class="cribado">SCREENING</h2>
+
+    <div class="campo">
+        <label>Records screened (n)</label>
+        <p class="desc">Registros sometidos a cribado por título y resumen.</p>
+        <input type="number" th:field="*{registrosCribados}" min="0" value="0"/>
+    </div>
+
+    <div class="campo exclusion">
+        <label>Records excluded (n)</label>
+        <p class="desc">Registros excluidos tras cribado por título y resumen.</p>
+        <input type="number" th:field="*{registrosExcluidos}" min="0" value="0"/>
+    </div>
+
+    <div class="campo">
+        <label>Reports sought for retrieval (n)</label>
+        <p class="desc">Informes buscados para recuperación de texto completo.</p>
+        <input type="number" th:field="*{informesBuscados}" min="0" value="0"/>
+    </div>
+
+    <div class="campo exclusion">
+        <label>Reports not retrieved (n)</label>
+        <p class="desc">Informes no recuperados tras búsqueda activa.</p>
+        <input type="number" th:field="*{informesNoRecuperados}" min="0" value="0"/>
+    </div>
+
+    <div class="campo">
+        <label>Reports assessed for eligibility (n)</label>
+        <p class="desc">Informes evaluados a texto completo para determinar elegibilidad.</p>
+        <input type="number" th:field="*{informesElegibilidad}" min="0" value="0"/>
+    </div>
+
+    <!-- EXCLUSION REASONS -->
+    <h2 class="exclusion">REPORTS EXCLUDED — Motivos de exclusión</h2>
+
+    <div class="campo exclusion">
+        <label>Ineligible study design (n)</label>
+        <p class="desc">Diseño de estudio no elegible según criterios de inclusión.</p>
+        <input type="number" th:field="*{excluidosDiseno}" min="0" value="0"/>
+    </div>
+
+    <div class="campo exclusion">
+        <label>Ineligible population (n)</label>
+        <p class="desc">Población no elegible según criterios de inclusión.</p>
+        <input type="number" th:field="*{excluidosPoblacion}" min="0" value="0"/>
+    </div>
+
+    <div class="campo exclusion">
+        <label>Ineligible intervention / phenomenon (n)</label>
+        <p class="desc">Intervención o fenómeno de interés no elegible.</p>
+        <input type="number" th:field="*{excluidosIntervencion}" min="0" value="0"/>
+    </div>
+
+    <div class="campo exclusion">
+        <label>Ineligible outcome (n)</label>
+        <p class="desc">Resultado o medida de desenlace no elegible.</p>
+        <input type="number" th:field="*{excluidosOutcome}" min="0" value="0"/>
+    </div>
+
+    <div class="campo exclusion">
+        <label>Full text unavailable (n)</label>
+        <p class="desc">Texto completo no disponible tras búsqueda activa.</p>
+        <input type="number" th:field="*{excluidosTextoNoDisponible}" min="0" value="0"/>
+    </div>
+
+    <div class="campo exclusion">
+        <label>Late duplicate (n)</label>
+        <p class="desc">Duplicado detectado tardíamente en fase de elegibilidad.</p>
+        <input type="number" th:field="*{excluidosDuplicadoTardio}" min="0" value="0"/>
+    </div>
+
+    <div class="campo exclusion">
+        <label>Other reasons (n)</label>
+        <p class="desc">Otros motivos de exclusión no contemplados anteriormente.</p>
+        <input type="number" th:field="*{excluidosOtros}" min="0" value="0"/>
+    </div>
+
+    <!-- INCLUDED -->
+    <h2 class="inclusion">INCLUDED</h2>
+
+    <div class="campo inclusion">
+        <label>Studies included in review (n)</label>
+        <p class="desc">Estudios finales incluidos en la revisión sistemática.</p>
+        <input type="number" th:field="*{estudiosIncluidos}" min="0" value="0"/>
+    </div>
+
+    <div class="campo inclusion">
+        <label>Reports of included studies (n)</label>
+        <p class="desc">Total de informes asociados a los estudios incluidos.</p>
+        <input type="number" th:field="*{informesIncluidos}" min="0" value="0"/>
+    </div>
+
+    <button type="submit">Generar y descargar diagrama PRISMA 2020 →</button>
+
+</form>
+
+</body>
+</html>
