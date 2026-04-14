@@ -11,11 +11,7 @@
             padding: 0 20px;
             background-color: #f5f5f5;
         }
-        h1 {
-            color: #1565C0;
-            border-bottom: 2px solid #1565C0;
-            padding-bottom: 10px;
-        }
+        h1 { color: #1565C0; border-bottom: 2px solid #1565C0; padding-bottom: 10px; }
         .componente {
             background: white;
             padding: 16px;
@@ -23,17 +19,8 @@
             border-radius: 6px;
             border-left: 4px solid #1565C0;
         }
-        label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 4px;
-            color: #263238;
-        }
-        .descripcion {
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 8px;
-        }
+        label { font-weight: bold; display: block; margin-bottom: 4px; color: #263238; }
+        .descripcion { font-size: 12px; color: #888; margin-bottom: 8px; }
         input[type="text"] {
             width: 100%;
             padding: 8px;
@@ -52,12 +39,19 @@
             cursor: pointer;
             margin-top: 10px;
         }
-        button:hover {
-            background-color: #0D47A1;
-        }
+        button:hover { background-color: #0D47A1; }
+        nav { margin-bottom: 24px; font-size: 13px; }
+        nav a { color: #1565C0; text-decoration: none; margin-right: 16px; }
+        nav a.zotero { color: #CC2936; }
     </style>
 </head>
 <body>
+
+<nav>
+    <a href="/">SPIDER</a>
+    <a href="/prisma">PRISMA</a>
+    <a href="/zotero" class="zotero">Zotero</a>
+</nav>
 
 <h1>SPIDER Protocol Tool v2.0</h1>
 <p>Completa los componentes del protocolo SPIDER para generar tu cadena de búsqueda booleana.</p>

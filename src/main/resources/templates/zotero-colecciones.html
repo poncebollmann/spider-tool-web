@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Colecciones Zotero</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background-color: #f5f5f5;
+        }
+        h1 { color: #CC2936; border-bottom: 2px solid #CC2936; padding-bottom: 10px; }
+        .coleccion {
+            background: white;
+            padding: 16px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border-left: 4px solid #CC2936;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nombre { font-weight: bold; color: #263238; }
+        button {
+            background-color: #CC2936;
+            color: white;
+            padding: 8px 18px;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        button:hover { background-color: #a31f2a; }
+        nav { margin-bottom: 20px; font-size: 13px; }
+        nav a { color: #1565C0; text-decoration: none; margin-right: 16px; }
+        .vacio { color: #888; font-size: 13px; padding: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/">← SPIDER Tool</a>
+    <a href="/zotero">← Volver</a>
+</nav>
+
+<h1>Tus colecciones</h1>
+<p style="font-size:13px; color:#555;">
+    Selecciona la colección que quieres revisar.
+</p>
+
+<div th:if="${colecciones.isEmpty()}" class="vacio">
+    No se encontraron colecciones con estudios. Asegúrate de tener estudios sincronizados en Zotero Web.
+</div>
+
+<div th:each="col : ${colecciones}" class="coleccion">
+    <span class="nombre" th:text="${col.titulo}">Nombre colección</span>
+    <form action="/zotero/items" method="post">
+        <input type="hidden" name="userId"         th:value="${userId}"/>
+        <input type="hidden" name="apiKey"         th:value="${apiKey}"/>
+        <input type="hidden" name="collectionKey"  th:value="${col.key}"/>
+        <input type="hidden" name="collectionName" th:value="${col.titulo}"/>
+        <button type="submit">Ver estudios →</button>
+    </form>
+</div>
+
+</body>
+</html>

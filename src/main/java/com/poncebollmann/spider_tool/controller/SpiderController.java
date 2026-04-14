@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class SpiderController {
 
     @GetMapping("/")
+    public String landing() {
+        return "landing";
+    }
+
+    @GetMapping("/spider")
     public String index(Model model) {
         model.addAttribute("searchRequest", new SearchRequest());
         return "index";

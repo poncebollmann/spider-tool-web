@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>SysReview Tool — PRISMA 2020</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* TOP NAV */
+    .topnav {
+      background: white;
+      border-bottom: 1px solid #eee;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark {
+      width: 30px; height: 30px;
+      background: #534AB7;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark svg { width: 16px; height: 16px; fill: white; }
+    .logo-name { font-size: 15px; font-weight: bold; color: #263238; }
+    .logo-badge {
+      font-size: 10px;
+      background: #EEEDFE;
+      color: #534AB7;
+      padding: 2px 8px;
+      border-radius: 99px;
+    }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-link {
+      font-size: 13px;
+      padding: 7px 14px;
+      border-radius: 6px;
+      color: #555;
+      text-decoration: none;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+    .nav-link:hover { background: #f5f5f5; color: #263238; }
+    .btn-ai {
+      font-size: 12px;
+      padding: 7px 14px;
+      border-radius: 6px;
+      background: #534AB7;
+      color: white;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-ai:hover { background: #4A148C; }
+
+    /* MAIN */
+    main { flex: 1; max-width: 960px; margin: 0 auto; width: 100%; padding: 40px 24px 60px; }
+
+    /* HERO */
+    .hero { text-align: center; padding: 40px 0 36px; }
+    .hero-tag {
+      display: inline-block;
+      font-size: 11px;
+      background: #EEEDFE;
+      color: #534AB7;
+      padding: 4px 14px;
+      border-radius: 99px;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: 32px;
+      font-weight: bold;
+      color: #263238;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+    .hero p {
+      font-size: 15px;
+      color: #666;
+      max-width: 520px;
+      margin: 0 auto 28px;
+      line-height: 1.7;
+    }
+    .hero-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      padding: 11px 24px;
+      border-radius: 6px;
+      background: #534AB7;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .btn-primary:hover { background: #4A148C; }
+    .btn-outline {
+      padding: 11px 24px;
+      border-radius: 6px;
+      background: white;
+      color: #263238;
+      border: 1px solid #ddd;
+      cursor: pointer;
+      font-size: 14px;
+      text-decoration: none;
+    }
+    .btn-outline:hover { border-color: #aaa; }
+
+    /* HERRAMIENTAS */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+    .tool-card {
+      background: white;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 20px;
+      text-decoration: none;
+      display: block;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .tool-card:hover { border-color: #ccc; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .tool-icon {
+      width: 38px; height: 38px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 14px;
+    }
+    .tool-icon.purple { background: #EEEDFE; }
+    .tool-icon.teal   { background: #E1F5EE; }
+    .tool-icon.coral  { background: #FAECE7; }
+    .tool-icon.amber  { background: #FAEEDA; }
+    .tool-name { font-size: 13px; font-weight: bold; color: #263238; margin-bottom: 5px; }
+    .tool-desc { font-size: 12px; color: #888; line-height: 1.5; margin-bottom: 10px; }
+    .tool-tag {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 99px;
+    }
+    .tag-purple { background: #EEEDFE; color: #534AB7; }
+    .tag-teal   { background: #E1F5EE; color: #0F6E56; }
+    .tag-coral  { background: #FAECE7; color: #993C1D; }
+    .tag-amber  { background: #FAEEDA; color: #854F0B; }
+
+    /* STATS */
+    .stats {
+      background: white;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin-bottom: 28px;
+    }
+    .stat {
+      text-align: center;
+      border-right: 1px solid #eee;
+      padding: 8px 0;
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num { font-size: 22px; font-weight: bold; color: #263238; }
+    .stat-lbl { font-size: 11px; color: #888; margin-top: 3px; }
+
+    /* FLUJO */
+    .section-title {
+      font-size: 11px;
+      font-weight: bold;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .flow-item {
+      background: white;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .flow-num { font-size: 10px; color: #888; margin-bottom: 5px; }
+    .flow-text { font-size: 13px; color: #263238; line-height: 1.5; }
+
+    /* PRISMA BANNER */
+    .prisma-banner {
+      background: #EEEDFE;
+      border-radius: 8px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .pb-left { display: flex; align-items: center; gap: 10px; }
+    .pb-dot { width: 7px; height: 7px; border-radius: 50%; background: #534AB7; flex-shrink: 0; }
+    .pb-text { font-size: 12px; color: #3C3489; }
+    .pb-link {
+      font-size: 11px;
+      color: #534AB7;
+      font-weight: bold;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    /* FOOTER */
+    footer {
+      background: white;
+      border-top: 1px solid #eee;
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-left { font-size: 11px; color: #aaa; }
+    .footer-right { font-size: 11px; color: #aaa; text-align: right; }
+    .footer-right a { color: #888; text-decoration: none; }
+    .footer-right a:hover { color: #534AB7; }
+    .footer-author { font-size: 11px; color: #aaa; }
+
+    @media (max-width: 700px) {
+      .tools-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .flow-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="topnav">
+  <a class="logo" href="/">
+    <div class="logo-mark">
+      <svg viewBox="0 0 16 16"><path d="M2 2h12v2H2V2zm0 4h8v2H2V6zm0 4h5v2H2v-2z"/></svg>
+    </div>
+    <span class="logo-name">SysReview Tool</span>
+    <span class="logo-badge">PRISMA 2020</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="/spider">SPIDER / PICO</a>
+    <a class="nav-link" href="/prisma">PRISMA</a>
+    <a class="nav-link" href="/zotero">Zotero</a>
+  </div>
+  <a class="btn-ai" href="/asistente">
+    <svg width="12" height="12" viewBox="0 0 16 16" fill="white">
+      <circle cx="8" cy="8" r="3"/>
+      <line x1="8" y1="1" x2="8" y2="3" stroke="white" stroke-width="1.5"/>
+      <line x1="8" y1="13" x2="8" y2="15" stroke="white" stroke-width="1.5"/>
+      <line x1="1" y1="8" x2="3" y2="8" stroke="white" stroke-width="1.5"/>
+      <line x1="13" y1="8" x2="15" y2="8" stroke="white" stroke-width="1.5"/>
+    </svg>
+    Asistente IA
+  </a>
+</nav>
+
+<main>
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Herramienta de apoyo metodológico</div>
+    <h1>Revisiones sistemáticas<br>con soporte IA</h1>
+    <p>Genera protocolos de búsqueda, diagramas PRISMA 2020, extrae datos de Zotero y consulta al asistente especializado.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="/spider">Comenzar revisión →</a>
+      <a class="btn-outline" href="/asistente">Consultar asistente IA</a>
+    </div>
+  </div>
+
+  <!-- HERRAMIENTAS -->
+  <div class="tools-grid">
+    <a class="tool-card" href="/spider">
+      <div class="tool-icon purple">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="#534AB7">
+          <rect x="2" y="2" width="16" height="3" rx="1"/>
+          <rect x="2" y="8" width="12" height="3" rx="1"/>
+          <rect x="2" y="14" width="8" height="3" rx="1"/>
+        </svg>
+      </div>
+      <div class="tool-name">Protocolo de búsqueda</div>
+      <div class="tool-desc">Construye cadenas booleanas con SPIDER, PICO o PICOS</div>
+      <span class="tool-tag tag-purple">SPIDER · PICO · PICOS</span>
+    </a>
+    <a class="tool-card" href="/prisma">
+      <div class="tool-icon teal">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="#0F6E56">
+          <rect x="2" y="2" width="7" height="7" rx="1"/>
+          <rect x="11" y="2" width="7" height="7" rx="1"/>
+          <rect x="2" y="11" width="7" height="7" rx="1"/>
+          <rect x="11" y="11" width="7" height="7" rx="1"/>
+        </svg>
+      </div>
+      <div class="tool-name">Diagrama PRISMA 2020</div>
+      <div class="tool-desc">Genera y descarga el diagrama de flujo oficial</div>
+      <span class="tool-tag tag-teal">SVG descargable</span>
+    </a>
+    <a class="tool-card" href="/zotero">
+      <div class="tool-icon coral">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="#993C1D">
+          <path d="M10 2L3 16h14L10 2z"/>
+        </svg>
+      </div>
+      <div class="tool-name">Extracción Zotero</div>
+      <div class="tool-desc">Importa estudios y exporta decisiones en CSV PRISMA</div>
+      <span class="tool-tag tag-coral">CSV · PRISMA 2020</span>
+    </a>
+    <a class="tool-card" href="/asistente">
+      <div class="tool-icon amber">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="#854F0B">
+          <circle cx="10" cy="10" r="4"/>
+          <line x1="10" y1="2" x2="10" y2="5" stroke="#854F0B" stroke-width="2"/>
+          <line x1="10" y1="15" x2="10" y2="18" stroke="#854F0B" stroke-width="2"/>
+          <line x1="2" y1="10" x2="5" y2="10" stroke="#854F0B" stroke-width="2"/>
+          <line x1="15" y1="10" x2="18" y2="10" stroke="#854F0B" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="tool-name">Asistente IA</div>
+      <div class="tool-desc">Evalúa estudios y mejora tu protocolo con Claude</div>
+      <span class="tool-tag tag-amber">Powered by Claude</span>
+    </a>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">4</div>
+      <div class="stat-lbl">herramientas integradas</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">PRISMA</div>
+      <div class="stat-lbl">2020 compliant</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3</div>
+      <div class="stat-lbl">protocolos soportados</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">CSV</div>
+      <div class="stat-lbl">exportación estándar</div>
+    </div>
+  </div>
+
+  <!-- FLUJO -->
+  <div class="section-title">Flujo de trabajo recomendado</div>
+  <div class="flow-grid">
+    <div class="flow-item">
+      <div class="flow-num">Paso 1</div>
+      <div class="flow-text">Define tu protocolo SPIDER o PICO y genera la cadena de búsqueda booleana</div>
+    </div>
+    <div class="flow-item">
+      <div class="flow-num">Paso 2</div>
+      <div class="flow-text">Importa tus resultados desde Zotero y registra inclusiones y exclusiones</div>
+    </div>
+    <div class="flow-item">
+      <div class="flow-num">Paso 3</div>
+      <div class="flow-text">Genera el diagrama PRISMA 2020 y exporta tu tabla de extracción en CSV</div>
+    </div>
+  </div>
+
+  <!-- PRISMA BANNER -->
+  <div class="prisma-banner">
+    <div class="pb-left">
+      <div class="pb-dot"></div>
+      <div class="pb-text">Conforme con las guías PRISMA 2020 · Page et al. (2021) BMJ 372:n71</div>
+    </div>
+    <a class="pb-link" href="https://www.prisma-statement.org" target="_blank">Ver checklist →</a>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    SysReview Tool ·
+  </div>
+  <div class="footer-author">
+    Desarrollado y propiedad de <a href="mailto:poncebollmann@gmail.com">Felipe Ponce Bollmann</a>,
+    Sociólogo e investigador multidisciplinar ·
+    <a href="mailto:poncebollmann@gmail.com">poncebollmann@gmail.com</a>
+  </div>
+</footer>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Conectar con Zotero</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 0 20px;
+      background-color: #f5f5f5;
+    }
+    h1 { color: #CC2936; border-bottom: 2px solid #CC2936; padding-bottom: 10px; }
+    .campo {
+      background: white;
+      padding: 16px;
+      margin-bottom: 14px;
+      border-radius: 6px;
+      border-left: 4px solid #CC2936;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 4px;
+      color: #263238;
+    }
+    .desc { font-size: 11px; color: #888; margin-bottom: 8px; }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    button {
+      background-color: #CC2936;
+      color: white;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 4px;
+      font-size: 15px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
+    button:hover { background-color: #a31f2a; }
+    .error {
+      background: #FFEBEE;
+      border-left: 4px solid #CC2936;
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 14px;
+      font-size: 13px;
+      color: #CC2936;
+    }
+    .info {
+      background: #E3F2FD;
+      border-left: 4px solid #1565C0;
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-size: 12px;
+      color: #263238;
+    }
+    nav { margin-bottom: 20px; font-size: 13px; }
+    nav a { color: #1565C0; text-decoration: none; margin-right: 16px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/">← SPIDER Tool</a>
+  <a href="/prisma">PRISMA</a>
+  <a href="/zotero">Zotero</a>
+</nav>
+
+<h1>Conectar con Zotero</h1>
+
+<div class="info">
+  Para conectarte necesitas tu <strong>User ID</strong> y una <strong>API Key</strong> de solo lectura.
+  Puedes obtenerla en <strong>zotero.org/settings/keys</strong> → Create new private key → Read Only.
+</div>
+
+<div th:if="${error}" class="error" th:text="${error}"></div>
+
+<form action="/zotero/colecciones" method="post">
+
+  <div class="campo">
+    <label>User ID de Zotero</label>
+    <p class="desc">Encuéntralo en zotero.org/settings/keys arriba del todo.</p>
+    <input type="text" name="userId" placeholder="Ej: 20252861" required/>
+  </div>
+
+  <div class="campo">
+    <label>API Key (solo lectura)</label>
+    <p class="desc">Genera una en zotero.org/settings/keys con permisos Read Only.</p>
+    <input type="text" name="apiKey" placeholder="Ej: WYprhwhzWJZA7KgvtwVqA8VR" required/>
+  </div>
+
+  <button type="submit">Conectar y ver colecciones →</button>
+
+</form>
+
+</body>
+</html>
