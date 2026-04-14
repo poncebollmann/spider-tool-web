@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Manual de uso — SysReview Tool</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      color: #263238;
+      line-height: 1.7;
+    }
+
+    /* NAV */
+    .topnav {
+      background: white;
+      border-bottom: 1px solid #eee;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark { width: 30px; height: 30px; background: #534AB7; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .logo-mark svg { width: 16px; height: 16px; fill: white; }
+    .logo-name { font-size: 15px; font-weight: bold; color: #263238; }
+    .logo-badge { font-size: 10px; background: #EEEDFE; color: #534AB7; padding: 2px 8px; border-radius: 99px; }
+    .nav-links { display: flex; gap: 4px; }
+    .nav-link { font-size: 13px; padding: 7px 14px; border-radius: 6px; color: #555; text-decoration: none; }
+    .nav-link:hover { background: #f5f5f5; color: #263238; }
+    .nav-link.active { background: #EEEDFE; color: #534AB7; font-weight: bold; }
+
+    /* LAYOUT */
+    .layout { display: flex; max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; gap: 40px; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 76px;
+      height: fit-content;
+    }
+    .sidebar-title { font-size: 11px; font-weight: bold; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+    .sidebar a {
+      display: block;
+      font-size: 13px;
+      color: #555;
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      margin-bottom: 2px;
+    }
+    .sidebar a:hover { background: #EEEDFE; color: #534AB7; }
+    .sidebar a.active { background: #EEEDFE; color: #534AB7; font-weight: bold; }
+    .sidebar-section { margin-top: 14px; margin-bottom: 4px; font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; padding-left: 10px; }
+
+    /* CONTENIDO */
+    .content { flex: 1; min-width: 0; }
+
+    /* HERO DEL MANUAL */
+    .manual-hero {
+      background: linear-gradient(135deg, #534AB7 0%, #3C3489 100%);
+      border-radius: 12px;
+      padding: 36px 32px;
+      margin-bottom: 36px;
+      color: white;
+    }
+    .manual-hero h1 { font-size: 26px; font-weight: bold; margin-bottom: 8px; }
+    .manual-hero p { font-size: 14px; opacity: 0.85; max-width: 520px; line-height: 1.6; }
+    .manual-hero .version { margin-top: 16px; font-size: 11px; opacity: 0.6; }
+
+    /* SECCIONES */
+    .seccion { margin-bottom: 48px; }
+    .seccion h2 {
+      font-size: 20px;
+      font-weight: bold;
+      color: #263238;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #EEEDFE;
+    }
+    .seccion h3 {
+      font-size: 15px;
+      font-weight: bold;
+      color: #534AB7;
+      margin: 20px 0 8px;
+    }
+    .seccion p { font-size: 14px; color: #444; margin-bottom: 12px; line-height: 1.7; }
+
+    /* CARDS DE HERRAMIENTAS */
+    .tool-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 16px 0; }
+    .tool-card {
+      background: white;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      padding: 18px;
+    }
+    .tool-card .icon { font-size: 22px; margin-bottom: 8px; }
+    .tool-card h4 { font-size: 13px; font-weight: bold; color: #263238; margin-bottom: 4px; }
+    .tool-card p { font-size: 12px; color: #888; margin: 0; line-height: 1.5; }
+
+    /* PASOS */
+    .pasos { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
+    .paso {
+      display: flex;
+      gap: 16px;
+      background: white;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      padding: 16px;
+      align-items: flex-start;
+    }
+    .paso-num {
+      width: 32px;
+      height: 32px;
+      background: #534AB7;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .paso-content h4 { font-size: 13px; font-weight: bold; color: #263238; margin-bottom: 4px; }
+    .paso-content p { font-size: 12px; color: #666; margin: 0; line-height: 1.5; }
+
+    /* TABLA */
+    .tabla {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 16px 0;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #eee;
+    }
+    .tabla th {
+      background: #534AB7;
+      color: white;
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: bold;
+    }
+    .tabla td { padding: 10px 14px; border-bottom: 1px solid #eee; color: #444; }
+    .tabla tr:last-child td { border-bottom: none; }
+    .tabla tr:nth-child(even) td { background: #FAFAFA; }
+
+    /* CAJAS */
+    .caja {
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 14px 0;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .caja.info { background: #EEEDFE; border-left: 4px solid #534AB7; color: #3C3489; }
+    .caja.tip  { background: #E1F5EE; border-left: 4px solid #0F6E56; color: #0F6E56; }
+    .caja.warn { background: #FAEEDA; border-left: 4px solid #854F0B; color: #854F0B; }
+
+    /* FAQ */
+    .faq { margin: 12px 0; }
+    .faq-item { background: white; border: 1px solid #eee; border-radius: 8px; margin-bottom: 8px; overflow: hidden; }
+    .faq-q { padding: 14px 16px; font-weight: bold; font-size: 13px; color: #263238; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    .faq-q:hover { background: #f9f9f9; }
+    .faq-a { padding: 0 16px 14px; font-size: 13px; color: #555; line-height: 1.6; display: none; }
+    .faq-item.open .faq-a { display: block; }
+    .faq-item.open .faq-q { color: #534AB7; }
+    .chevron { font-size: 12px; transition: transform 0.2s; }
+    .faq-item.open .chevron { transform: rotate(180deg); }
+
+    /* PROTOCOLO CARDS */
+    .proto-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+    .proto-card { background: white; border: 1px solid #eee; border-radius: 10px; overflow: hidden; }
+    .proto-header { padding: 12px 16px; font-weight: bold; font-size: 13px; }
+    .proto-header.purple { background: #EEEDFE; color: #534AB7; }
+    .proto-header.teal   { background: #E1F5EE; color: #0F6E56; }
+    .proto-header.coral  { background: #FAECE7; color: #993C1D; }
+    .proto-body { padding: 12px 16px; font-size: 12px; color: #555; line-height: 1.6; }
+
+    /* FOOTER */
+    footer {
+      background: white;
+      border-top: 1px solid #eee;
+      padding: 14px 32px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #aaa;
+    }
+    footer a { color: #888; text-decoration: none; }
+    footer a:hover { color: #534AB7; }
+
+    @media (max-width: 768px) {
+      .layout { flex-direction: column; }
+      .sidebar { display: none; }
+      .tool-cards { grid-template-columns: 1fr; }
+      .proto-cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="topnav">
+  <a class="logo" href="/">
+    <div class="logo-mark">
+      <svg viewBox="0 0 16 16"><path d="M2 2h12v2H2V2zm0 4h8v2H2V6zm0 4h5v2H2v-2z"/></svg>
+    </div>
+    <span class="logo-name">SysReview Tool</span>
+    <span class="logo-badge">PRISMA 2020</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="/spider">SPIDER / PICO</a>
+    <a class="nav-link" href="/prisma">PRISMA</a>
+    <a class="nav-link" href="/zotero">Zotero</a>
+    <a class="nav-link" href="/asistente">Asistente IA</a>
+    <a class="nav-link active" href="/manual">Manual</a>
+  </div>
+</nav>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-title">Contenido</div>
+    <a href="#intro">¿Qué es SysReview Tool?</a>
+    <a href="#revision">Revisión sistemática</a>
+    <a href="#flujo">Flujo de trabajo</a>
+    <div class="sidebar-section">Herramientas</div>
+    <a href="#spider">Protocolo de búsqueda</a>
+    <a href="#prisma">Diagrama PRISMA 2020</a>
+    <a href="#zotero">Integración Zotero</a>
+    <a href="#asistente">Asistente IA</a>
+    <div class="sidebar-section">Ayuda</div>
+    <a href="#faq">Preguntas frecuentes</a>
+    <a href="#contacto">Contacto</a>
+  </aside>
+
+  <!-- CONTENIDO -->
+  <main class="content">
+
+    <!-- HERO -->
+    <div class="manual-hero">
+      <h1>Manual de uso — SysReview Tool</h1>
+      <p>Guía completa para investigadores que utilizan la herramienta de apoyo a revisiones sistemáticas conforme a PRISMA 2020.</p>
+      <div class="version">Versión 2.0 · Abril 2026 · PRISMA 2020 compliant</div>
+    </div>
+
+    <!-- 1. QUÉ ES -->
+    <div class="seccion" id="intro">
+      <h2>1. ¿Qué es SysReview Tool?</h2>
+      <p>SysReview Tool es una herramienta web de apoyo metodológico diseñada para facilitar el proceso de revisión sistemática de literatura científica. Integra en un único entorno las cuatro fases más críticas del proceso:</p>
+
+      <div class="tool-cards">
+        <div class="tool-card">
+          <div class="icon">📋</div>
+          <h4>Protocolo de búsqueda</h4>
+          <p>Construye cadenas de búsqueda booleana siguiendo los protocolos SPIDER, PICO o PICOS, con soporte para sinónimos y exportación CSV.</p>
+        </div>
+        <div class="tool-card">
+          <div class="icon">📊</div>
+          <h4>Diagrama PRISMA 2020</h4>
+          <p>Genera el diagrama de flujo oficial PRISMA 2020 cumplimentado con tus datos, descargable en formato SVG.</p>
+        </div>
+        <div class="tool-card">
+          <div class="icon">📚</div>
+          <h4>Extracción desde Zotero</h4>
+          <p>Conecta con tu biblioteca Zotero, visualiza los estudios y registra decisiones de inclusión/exclusión exportables en CSV.</p>
+        </div>
+        <div class="tool-card">
+          <div class="icon">🤖</div>
+          <h4>Asistente IA</h4>
+          <p>Consulta al asistente especializado basado en Claude (Anthropic) para evaluar estudios, mejorar tu protocolo y resolver dudas metodológicas.</p>
+        </div>
+      </div>
+
+      <div class="caja info">
+        <strong>Contexto académico:</strong> Esta herramienta fue desarrollada en el marco del Curso de Especialización en Programación con Java de La Salle Barcelona, aplicando los conocimientos técnicos a un problema real de investigación científica.
+      </div>
+    </div>
+
+    <!-- 2. REVISIÓN SISTEMÁTICA -->
+    <div class="seccion" id="revision">
+      <h2>2. ¿Qué es una revisión sistemática?</h2>
+      <p>Una revisión sistemática es una síntesis rigurosa y reproducible de la literatura científica existente sobre una pregunta de investigación específica. A diferencia de una revisión narrativa, sigue un protocolo predefinido que minimiza el sesgo y maximiza la transparencia.</p>
+
+      <h3>¿Por qué es importante?</h3>
+      <p>Las revisiones sistemáticas constituyen el nivel más alto de evidencia científica. Son la base de guías clínicas, políticas públicas y decisiones institucionales en campos como la salud, las ciencias sociales y la educación.</p>
+
+      <h3>Fases del proceso</h3>
+      <div class="pasos">
+        <div class="paso">
+          <div class="paso-num">1</div>
+          <div class="paso-content">
+            <h4>Formulación de la pregunta</h4>
+            <p>Define el objeto de estudio usando un protocolo estructurado (SPIDER, PICO o PICOS) que delimita la población, el fenómeno de interés, el diseño y el tipo de investigación buscado.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">2</div>
+          <div class="paso-content">
+            <h4>Búsqueda bibliográfica</h4>
+            <p>Se busca en múltiples bases de datos (Scopus, PubMed, Web of Science) usando la cadena booleana generada a partir del protocolo.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">3</div>
+          <div class="paso-content">
+            <h4>Cribado y selección</h4>
+            <p>Los registros se filtran por título/resumen y luego por texto completo, aplicando criterios de inclusión y exclusión predefinidos.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">4</div>
+          <div class="paso-content">
+            <h4>Extracción de datos</h4>
+            <p>Se extraen los datos relevantes de cada estudio incluido de forma sistemática y estandarizada.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">5</div>
+          <div class="paso-content">
+            <h4>Síntesis y reporte</h4>
+            <p>Se sintetizan los hallazgos y se reportan siguiendo las guías PRISMA 2020 para garantizar la transparencia y reproducibilidad.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. FLUJO DE TRABAJO -->
+    <div class="seccion" id="flujo">
+      <h2>3. Flujo de trabajo recomendado</h2>
+      <p>SysReview Tool está diseñada para acompañar las fases 1 a 4 del proceso. El flujo recomendado es:</p>
+
+      <div class="pasos">
+        <div class="paso">
+          <div class="paso-num">1</div>
+          <div class="paso-content">
+            <h4>Define tu protocolo → SPIDER / PICO / PICOS</h4>
+            <p>Ve a <strong>Protocolo de búsqueda</strong> y selecciona el protocolo más adecuado para tu tipo de investigación. Introduce los términos de cada componente y añade sinónimos para enriquecer la búsqueda. Exporta la cadena booleana en CSV.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">2</div>
+          <div class="paso-content">
+            <h4>Busca en las bases de datos y guarda en Zotero</h4>
+            <p>Usa la cadena generada en Scopus, PubMed o Web of Science. Guarda los resultados en una colección de tu biblioteca Zotero y sincroniza.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">3</div>
+          <div class="paso-content">
+            <h4>Conecta Zotero y registra decisiones</h4>
+            <p>Ve a <strong>Extracción Zotero</strong>, introduce tu User ID y API Key, selecciona tu colección y registra para cada estudio la decisión (Include / Exclude / Maybe), el estado y el motivo de exclusión si aplica. Exporta el CSV.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">4</div>
+          <div class="paso-content">
+            <h4>Genera el diagrama PRISMA 2020</h4>
+            <p>Con los números de cada fase del cribado, ve a <strong>Diagrama PRISMA 2020</strong> y rellena el formulario. Descarga el SVG para incluirlo en tu manuscrito.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">5</div>
+          <div class="paso-content">
+            <h4>Consulta el Asistente IA cuando tengas dudas</h4>
+            <p>En cualquier momento puedes consultar al asistente para evaluar si un estudio cumple tus criterios, mejorar tu cadena booleana o resolver dudas sobre PRISMA 2020.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. SPIDER / PICO / PICOS -->
+    <div class="seccion" id="spider">
+      <h2>4. Protocolo de búsqueda</h2>
+      <p>La herramienta soporta tres protocolos de estructuración de preguntas de investigación. Elige el que mejor se adapte al tipo de estudio que estás revisando:</p>
+
+      <div class="proto-cards">
+        <div class="proto-card">
+          <div class="proto-header purple">SPIDER</div>
+          <div class="proto-body">
+            Para investigación <strong>cualitativa y mixta</strong>.<br><br>
+            <strong>S</strong> Sample · <strong>P</strong> Phenomenon · <strong>I</strong> Design · <strong>D</strong> Evaluation · <strong>E</strong> Research type · <strong>R</strong> Research
+          </div>
+        </div>
+        <div class="proto-card">
+          <div class="proto-header teal">PICO</div>
+          <div class="proto-body">
+            Para investigación <strong>cuantitativa y clínica</strong>.<br><br>
+            <strong>P</strong> Population · <strong>I</strong> Intervention · <strong>C</strong> Comparison · <strong>O</strong> Outcome
+          </div>
+        </div>
+        <div class="proto-card">
+          <div class="proto-header coral">PICOS</div>
+          <div class="proto-body">
+            PICO + tipo de estudio. Para revisiones que requieren especificar el <strong>diseño metodológico</strong>.<br><br>
+            <strong>S</strong> Study type
+          </div>
+        </div>
+      </div>
+
+      <h3>Sinónimos y cadena booleana</h3>
+      <p>Para cada componente puedes añadir sinónimos. La herramienta los unirá automáticamente con el operador <strong>OR</strong> dentro de cada componente, y los componentes entre sí con <strong>AND</strong>:</p>
+
+      <div class="caja tip">
+        <strong>Ejemplo:</strong> (adolescentes OR jóvenes OR youth) AND (burnout OR agotamiento laboral) AND entrevista AND bienestar AND cualitativa
+      </div>
+
+      <p>Esta cadena puede copiarse directamente en cualquier base de datos académica: Scopus, PubMed, Web of Science o PsycINFO.</p>
+    </div>
+
+    <!-- 5. PRISMA -->
+    <div class="seccion" id="prisma">
+      <h2>5. Diagrama PRISMA 2020</h2>
+      <p>El diagrama de flujo PRISMA 2020 es el estándar internacional para reportar el proceso de selección de estudios en una revisión sistemática. La herramienta genera la versión oficial para búsquedas en <strong>bases de datos y registros únicamente</strong>.</p>
+
+      <h3>Campos del formulario</h3>
+      <table class="tabla">
+        <thead>
+        <tr><th>Campo</th><th>Descripción</th></tr>
+        </thead>
+        <tbody>
+        <tr><td>Records identified — Databases</td><td>Total de registros encontrados en bases de datos</td></tr>
+        <tr><td>Records identified — Registers</td><td>Registros encontrados en registros de ensayos</td></tr>
+        <tr><td>Duplicate records removed</td><td>Duplicados eliminados antes del cribado</td></tr>
+        <tr><td>Ineligible by automation</td><td>Excluidos por herramientas automáticas</td></tr>
+        <tr><td>Records screened</td><td>Registros sometidos a cribado por título/resumen</td></tr>
+        <tr><td>Records excluded</td><td>Excluidos tras el cribado</td></tr>
+        <tr><td>Reports sought for retrieval</td><td>Buscados para obtener texto completo</td></tr>
+        <tr><td>Reports not retrieved</td><td>No recuperados</td></tr>
+        <tr><td>Reports assessed for eligibility</td><td>Evaluados a texto completo</td></tr>
+        <tr><td>Reports excluded (7 motivos)</td><td>Excluidos con motivo específico</td></tr>
+        <tr><td>Studies included in review</td><td>Estudios incluidos finalmente</td></tr>
+        </tbody>
+      </table>
+
+      <div class="caja warn">
+        <strong>Importante:</strong> Asegúrate de que los números son coherentes entre fases. El total de excluidos en elegibilidad debe coincidir con la suma de todos los motivos de exclusión.
+      </div>
+    </div>
+
+    <!-- 6. ZOTERO -->
+    <div class="seccion" id="zotero">
+      <h2>6. Integración con Zotero</h2>
+      <p>La herramienta se conecta con tu biblioteca personal de Zotero a través de la API oficial. Cada investigador usa sus propias credenciales — la herramienta nunca almacena ni comparte tus datos.</p>
+
+      <h3>Cómo obtener tu API Key</h3>
+      <div class="pasos">
+        <div class="paso">
+          <div class="paso-num">1</div>
+          <div class="paso-content">
+            <h4>Ve a zotero.org/settings/keys</h4>
+            <p>Inicia sesión en tu cuenta de Zotero en la web.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">2</div>
+          <div class="paso-content">
+            <h4>Crea una nueva key de solo lectura</h4>
+            <p>Clic en "Create new private key" → pon un nombre como "sysreview-tool" → marca solo "Read Only" → guarda.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">3</div>
+          <div class="paso-content">
+            <h4>Copia tu User ID y la API Key</h4>
+            <p>El User ID aparece arriba de la página de keys. Copia ambos datos e introdúcelos en el formulario de conexión.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="caja info">
+        <strong>Requisito previo:</strong> Los estudios deben estar sincronizados entre el programa de escritorio Zotero y la nube. Usa el botón de sincronización (nube verde) en el programa antes de conectarte.
+      </div>
+
+      <h3>Tabla de extracción CSV</h3>
+      <p>El CSV exportado sigue el estándar PRISMA 2020 e incluye las siguientes columnas:</p>
+      <table class="tabla">
+        <thead>
+        <tr><th>Columna</th><th>Descripción</th></tr>
+        </thead>
+        <tbody>
+        <tr><td>study_id</td><td>Generado automáticamente: Apellido + Año</td></tr>
+        <tr><td>citation_short</td><td>Cita abreviada: Apellido (Año)</td></tr>
+        <tr><td>title</td><td>Título completo del estudio</td></tr>
+        <tr><td>year</td><td>Año de publicación</td></tr>
+        <tr><td>journal</td><td>Revista o fuente</td></tr>
+        <tr><td>study_design</td><td>Diseño metodológico seleccionado</td></tr>
+        <tr><td>full_text_decision</td><td>Include / Exclude / Maybe</td></tr>
+        <tr><td>decision_status</td><td>Pending / In review / Final / Excluded</td></tr>
+        <tr><td>exclusion_reason</td><td>Motivo de exclusión según categorías PRISMA</td></tr>
+        <tr><td>reviewer</td><td>Iniciales del revisor responsable</td></tr>
+        <tr><td>notes</td><td>Notas adicionales sobre la decisión</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 7. ASISTENTE IA -->
+    <div class="seccion" id="asistente">
+      <h2>7. Asistente IA</h2>
+      <p>El asistente está basado en Claude (Anthropic) y está especializado en metodología de revisión sistemática. Puede ayudarte en tiempo real con dudas concretas del proceso.</p>
+
+      <h3>¿Qué puede hacer?</h3>
+      <div class="pasos">
+        <div class="paso">
+          <div class="paso-num">✓</div>
+          <div class="paso-content">
+            <h4>Evaluar si un estudio cumple tus criterios</h4>
+            <p>Pega el abstract en el campo "Abstract o título a evaluar" y pregunta: "¿Cumple mis criterios de inclusión?"</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">✓</div>
+          <div class="paso-content">
+            <h4>Sugerir sinónimos y términos MeSH</h4>
+            <p>Describe tu protocolo y pide sugerencias para enriquecer tu cadena de búsqueda.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">✓</div>
+          <div class="paso-content">
+            <h4>Resolver dudas sobre PRISMA 2020</h4>
+            <p>Pregunta sobre los campos del formulario, cómo reportar correctamente o qué motivo de exclusión aplica.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">✓</div>
+          <div class="paso-content">
+            <h4>Evaluar calidad metodológica</h4>
+            <p>Describe el diseño de un estudio y pide orientación sobre su calidad metodológica.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>Cómo sacarle más partido</h3>
+      <p>El asistente responde mejor cuando le das contexto. Usa los tres campos del panel izquierdo:</p>
+      <div class="caja tip">
+        <strong>Consejo:</strong> Rellena el campo "Protocolo de búsqueda" con tu SPIDER o PICO antes de hacer preguntas. Así el asistente conoce tu contexto y sus respuestas serán mucho más precisas.
+      </div>
+
+      <h3>Limitaciones</h3>
+      <div class="caja warn">
+        El asistente no sustituye el criterio del investigador ni la revisión por pares. Sus sugerencias son orientativas y deben ser validadas por el equipo de revisión. Requiere conexión a internet y créditos en la cuenta Anthropic del administrador.
+      </div>
+    </div>
+
+    <!-- 8. FAQ -->
+    <div class="seccion" id="faq">
+      <h2>8. Preguntas frecuentes</h2>
+      <div class="faq">
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            ¿Necesito instalar algo para usar la herramienta?
+            <span class="chevron">▼</span>
+          </div>
+          <div class="faq-a">No. SysReview Tool es una aplicación web — solo necesitas un navegador y conexión a internet. Accede directamente desde la URL que te haya compartido el administrador.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            ¿Mis datos se almacenan en la herramienta?
+            <span class="chevron">▼</span>
+          </div>
+          <div class="faq-a">No. La herramienta no tiene base de datos propia. Tus credenciales de Zotero se usan solo durante la sesión y no se guardan. Los CSV generados se descargan directamente a tu ordenador.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            ¿Qué diferencia hay entre SPIDER y PICO?
+            <span class="chevron">▼</span>
+          </div>
+          <div class="faq-a">SPIDER está diseñado para investigación cualitativa y mixta (experiencias, percepciones, fenómenos sociales). PICO es más adecuado para investigación cuantitativa y clínica (eficacia de intervenciones, comparaciones entre tratamientos). Si tu revisión incluye estudios de ambos tipos, PICOS puede ser una opción más completa.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            ¿Por qué no aparecen mis colecciones de Zotero?
+            <span class="chevron">▼</span>
+          </div>
+          <div class="faq-a">Asegúrate de: (1) haber sincronizado Zotero escritorio con la nube antes de conectarte, (2) que la colección tiene al menos un ítem, y (3) que la API Key tiene permisos de lectura sobre tu biblioteca personal.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            ¿El diagrama PRISMA generado es válido para publicar?
+            <span class="chevron">▼</span>
+          </div>
+          <div class="faq-a">Sí. El diagrama sigue la plantilla oficial PRISMA 2020 (Page et al., 2021, BMJ 372:n71) para revisiones que incluyen únicamente búsquedas en bases de datos y registros. El archivo SVG puede insertarse directamente en Word, LaTeX o cualquier procesador de textos.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            ¿El asistente IA tiene acceso a mis datos de Zotero?
+            <span class="chevron">▼</span>
+          </div>
+          <div class="faq-a">No. El asistente solo recibe lo que tú escribes en los campos de contexto (protocolo, abstract, criterios). No tiene acceso a tu biblioteca Zotero ni a ningún dato externo.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 9. CONTACTO -->
+    <div class="seccion" id="contacto">
+      <h2>9. Contacto y soporte</h2>
+      <p>SysReview Tool es un proyecto en desarrollo activo. Si encuentras errores, tienes sugerencias de mejora o quieres colaborar en el piloto, contacta con el autor:</p>
+      <div class="caja info">
+        <strong>Felipe Ponce Bollmann</strong><br>
+        Sociólogo e investigador multidisciplinar<br>
+        <a href="mailto:poncebollmann@gmail.com" style="color: #534AB7;">poncebollmann@gmail.com</a><br><br>
+        Desarrollado en el marco del <strong>Curso de Especialización en Programación con Java</strong> · La Salle Barcelona
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>SysReview Tool ·</div>
+  <div>Desarrollado y propiedad de <a href="mailto:poncebollmann@gmail.com">Felipe Ponce Bollmann</a>, Sociólogo e investigador multidisciplinar · <a href="mailto:poncebollmann@gmail.com">poncebollmann@gmail.com</a></div>
+</footer>
+
+<script>
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    item.classList.toggle('open');
+  }
+
+  // Resaltar sección activa en sidebar al hacer scroll
+  const secciones = document.querySelectorAll('.seccion');
+  const links = document.querySelectorAll('.sidebar a');
+
+  window.addEventListener('scroll', () => {
+    let actual = '';
+    secciones.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) actual = s.id;
+    });
+    links.forEach(l => {
+      l.classList.toggle('active', l.getAttribute('href') === '#' + actual);
+    });
+  });
+</script>
+
+</body>
+</html>
