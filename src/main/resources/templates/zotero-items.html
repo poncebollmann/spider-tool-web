@@ -5,161 +5,59 @@
   <title>Extracción de datos — PRISMA 2020</title>
   <style>
     * { box-sizing: border-box; }
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 1100px;
-      margin: 40px auto;
-      padding: 0 20px;
-      background-color: #f5f5f5;
-      font-size: 13px;
-    }
+    body { font-family: Arial, sans-serif; max-width: 1100px; margin: 40px auto; padding: 0 20px; background-color: #f5f5f5; font-size: 13px; }
     h1 { color: #CC2936; border-bottom: 2px solid #CC2936; padding-bottom: 10px; font-size: 20px; }
-
-    /* BARRA DE PROGRESO */
-    .barra-superior {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 16px;
-      background: white;
-      padding: 12px 16px;
-      border-radius: 6px;
-      border: 1px solid #ddd;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .contador-badge {
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: bold;
-    }
-    .badge-total    { background: #E3F2FD; color: #1565C0; }
-    .badge-include  { background: #E8F5E9; color: #2E7D32; }
-    .badge-exclude  { background: #FFEBEE; color: #CC2936; }
-    .badge-maybe    { background: #FFF3E0; color: #E65100; }
-    .badge-pending  { background: #F5F5F5; color: #555; }
-
-    /* TARJETA DE ESTUDIO */
-    .estudio {
-      background: white;
-      padding: 14px 16px;
-      margin-bottom: 10px;
-      border-radius: 6px;
-      border-left: 5px solid #ccc;
-      transition: border-color 0.2s;
-    }
+    .barra-superior { display: flex; gap: 12px; margin-bottom: 16px; background: white; padding: 12px 16px; border-radius: 6px; border: 1px solid #ddd; align-items: center; flex-wrap: wrap; }
+    .contador-badge { padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+    .badge-total   { background: #E3F2FD; color: #1565C0; }
+    .badge-include { background: #E8F5E9; color: #2E7D32; }
+    .badge-exclude { background: #FFEBEE; color: #CC2936; }
+    .badge-maybe   { background: #FFF3E0; color: #E65100; }
+    .badge-pending { background: #F5F5F5; color: #555; }
+    .estudio { background: white; padding: 14px 16px; margin-bottom: 10px; border-radius: 6px; border-left: 5px solid #ccc; transition: border-color 0.2s; }
     .estudio.include { border-left-color: #2E7D32; background: #FAFFFE; }
     .estudio.exclude { border-left-color: #CC2936; background: #FFFAFA; }
     .estudio.maybe   { border-left-color: #E65100; background: #FFFDF5; }
-
-    .estudio-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 6px;
-      gap: 12px;
-    }
-    .titulo {
-      font-weight: bold;
-      color: #263238;
-      font-size: 13px;
-      flex: 1;
-    }
-    .study-id {
-      font-size: 10px;
-      color: #999;
-      white-space: nowrap;
-      padding-top: 2px;
-    }
-    .meta {
-      font-size: 11px;
-      color: #777;
-      margin-bottom: 10px;
-      font-style: italic;
-    }
-
-    /* GRID DE CAMPOS */
-    .campos-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 8px;
-    }
-    .campos-grid-wide {
-      display: grid;
-      grid-template-columns: 1fr 1fr 2fr;
-      gap: 8px;
-    }
-    .campo-label {
-      font-size: 10px;
-      color: #888;
-      margin-bottom: 3px;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-    }
-    select, input[type="text"] {
-      width: 100%;
-      padding: 5px 7px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 12px;
-      background: white;
-    }
-    select:focus, input[type="text"]:focus {
-      outline: none;
-      border-color: #1565C0;
-    }
-
-    /* DECISIÓN CON COLOR */
+    .estudio-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; gap: 12px; }
+    .titulo { font-weight: bold; color: #263238; font-size: 13px; flex: 1; }
+    .study-id { font-size: 10px; color: #999; white-space: nowrap; padding-top: 2px; }
+    .meta { font-size: 11px; color: #777; margin-bottom: 10px; font-style: italic; }
+    .campos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+    .campos-grid-wide { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 8px; }
+    .campo-label { font-size: 10px; color: #888; margin-bottom: 3px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.3px; }
+    select, input[type="text"] { width: 100%; padding: 5px 7px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; background: white; }
+    select:focus, input[type="text"]:focus { outline: none; border-color: #1565C0; }
     select.decision-include { border-color: #2E7D32; color: #2E7D32; font-weight: bold; }
     select.decision-exclude { border-color: #CC2936; color: #CC2936; font-weight: bold; }
     select.decision-maybe   { border-color: #E65100; color: #E65100; font-weight: bold; }
-
-    /* BOTÓN EXPORTAR */
-    .btn-exportar {
-      background-color: #2E7D32;
-      color: white;
-      padding: 14px 28px;
-      border: none;
-      border-radius: 6px;
-      font-size: 15px;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 20px;
-      font-weight: bold;
-    }
+    .btn-exportar { background-color: #2E7D32; color: white; padding: 14px 28px; border: none; border-radius: 6px; font-size: 15px; cursor: pointer; width: 100%; margin-top: 20px; font-weight: bold; }
     .btn-exportar:hover { background-color: #1B5E20; }
-
-    /* NOTA PRISMA */
-    .nota-prisma {
-      background: #E3F2FD;
-      border-left: 4px solid #1565C0;
-      padding: 10px 14px;
-      border-radius: 4px;
-      font-size: 11px;
-      color: #263238;
-      margin-bottom: 16px;
-    }
-
+    .nota-prisma { background: #E3F2FD; border-left: 4px solid #1565C0; padding: 10px 14px; border-radius: 4px; font-size: 11px; color: #263238; margin-bottom: 16px; }
     nav { margin-bottom: 16px; font-size: 13px; }
     nav a { color: #1565C0; text-decoration: none; margin-right: 16px; }
+    .siguiente-paso { margin-top: 24px; background: #F8F6FF; border: 1px solid #CECBF6; border-radius: 12px; padding: 22px 24px; }
+    .sp-tag { font-size: 10px; font-weight: bold; color: #534AB7; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .sp-titulo { font-size: 15px; font-weight: bold; color: #263238; margin-bottom: 8px; }
+    .sp-desc { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 16px; }
+    .sp-pasos { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+    .sp-paso { background: white; border: 1px solid #eee; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #444; flex: 1; min-width: 160px; line-height: 1.5; }
+    .sp-paso strong { display: block; color: #534AB7; margin-bottom: 3px; font-size: 11px; }
+    .sp-btn { display: inline-block; padding: 11px 22px; background: #534AB7; color: white; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: bold; }
+    .sp-btn:hover { background: #4A148C; }
   </style>
 </head>
 <body>
 
 <nav>
-  <a href="/">← SPIDER Tool</a>
+  <a href="/">← Inicio</a>
   <a href="/zotero">← Zotero</a>
+  <a href="/manual">Manual</a>
 </nav>
 
 <h1 th:text="${collectionName}">Colección</h1>
 
-<!-- Contadores dinámicos -->
 <div class="barra-superior">
-        <span class="contador-badge badge-total">
-            Total: <span id="cnt-total" th:text="${items.size()}">0</span>
-        </span>
+  <span class="contador-badge badge-total">Total: <span id="cnt-total" th:text="${items.size()}">0</span></span>
   <span class="contador-badge badge-include">✓ Include: <span id="cnt-include">0</span></span>
   <span class="contador-badge badge-exclude">✗ Exclude: <span id="cnt-exclude">0</span></span>
   <span class="contador-badge badge-maybe">? Maybe: <span id="cnt-maybe">0</span></span>
@@ -179,38 +77,27 @@
        th:id="'estudio-' + ${stat.index}"
        class="estudio">
 
-    <!-- Campos ocultos -->
     <input type="hidden" name="keys"     th:value="${item.key}"/>
     <input type="hidden" name="titulos"  th:value="${item.titulo}"/>
     <input type="hidden" name="autores"  th:value="${item.autores}"/>
     <input type="hidden" name="anios"    th:value="${item.anio}"/>
     <input type="hidden" name="revistas" th:value="${item.revista}"/>
 
-    <!-- Cabecera -->
     <div class="estudio-header">
       <div class="titulo" th:text="${item.titulo}">Título</div>
-      <div class="study-id"
-           th:text="${#strings.abbreviate(item.autores?.split(',')[0], 15)} + ${item.anio}">
-        ID
-      </div>
+      <div class="study-id" th:text="${#strings.abbreviate(item.autores?.split(',')[0], 15)} + ${item.anio}">ID</div>
     </div>
 
-    <!-- Metadatos -->
     <div class="meta">
       <span th:text="${item.autores}">Autores</span> ·
       <span th:text="${item.anio}">Año</span>
-      <span th:if="${item.revista != null and !item.revista.isEmpty()}">
-                    · <em th:text="${item.revista}">Revista</em>
-                </span>
+      <span th:if="${item.revista != null and !item.revista.isEmpty()}"> · <em th:text="${item.revista}">Revista</em></span>
     </div>
 
-    <!-- Fila 1: Decisión, Estado, Diseño, Revisor -->
     <div class="campos-grid">
       <div>
         <div class="campo-label">Decisión *</div>
-        <select name="decisiones"
-                th:data-index="${stat.index}"
-                onchange="actualizarDecision(this)">
+        <select name="decisiones" th:data-index="${stat.index}" onchange="actualizarDecision(this)">
           <option value="Pending">⏳ Pending</option>
           <option value="Include">✓ Include</option>
           <option value="Exclude">✗ Exclude</option>
@@ -246,7 +133,6 @@
       </div>
     </div>
 
-    <!-- Fila 2: Motivo exclusión y Notas -->
     <div class="campos-grid-wide">
       <div>
         <div class="campo-label">Exclusion reason</div>
@@ -263,8 +149,7 @@
       </div>
       <div>
         <div class="campo-label">Decision status detail</div>
-        <input type="text" name="notas"
-               placeholder="Notas adicionales sobre la decisión..."/>
+        <input type="text" name="notas" placeholder="Notas adicionales sobre la decisión..."/>
       </div>
     </div>
   </div>
@@ -275,39 +160,40 @@
 
 </form>
 
+<!-- SIGUIENTE PASO -->
+<div class="siguiente-paso">
+  <div class="sp-tag">Siguiente paso</div>
+  <div class="sp-titulo">Genera el diagrama PRISMA 2020</div>
+  <div class="sp-desc">Con los números del proceso de cribado registrados, genera el diagrama de flujo oficial PRISMA 2020 listo para incluir en tu manuscrito.</div>
+  <div class="sp-pasos">
+    <div class="sp-paso"><strong>1. Anota los números</strong>Cuántos registros identificaste, cribaste, excluiste e incluiste.</div>
+    <div class="sp-paso"><strong>2. Rellena el formulario</strong>Introduce los datos en el formulario PRISMA 2020.</div>
+    <div class="sp-paso"><strong>3. Descarga el SVG</strong>Diagrama listo para insertar en Word o LaTeX.</div>
+  </div>
+  <a class="sp-btn" href="/prisma">Continuar con diagrama PRISMA →</a>
+</div>
+
 <script>
   function actualizarDecision(select) {
     const index = select.getAttribute('data-index');
     const div   = document.getElementById('estudio-' + index);
-
     div.classList.remove('include', 'exclude', 'maybe');
     select.classList.remove('decision-include', 'decision-exclude', 'decision-maybe');
-
-    if (select.value === 'Include') {
-      div.classList.add('include');
-      select.classList.add('decision-include');
-    } else if (select.value === 'Exclude') {
-      div.classList.add('exclude');
-      select.classList.add('decision-exclude');
-    } else if (select.value === 'Maybe') {
-      div.classList.add('maybe');
-      select.classList.add('decision-maybe');
-    }
-
+    if (select.value === 'Include') { div.classList.add('include'); select.classList.add('decision-include'); }
+    else if (select.value === 'Exclude') { div.classList.add('exclude'); select.classList.add('decision-exclude'); }
+    else if (select.value === 'Maybe') { div.classList.add('maybe'); select.classList.add('decision-maybe'); }
     actualizarContadores();
   }
 
   function actualizarContadores() {
-    const selects  = document.querySelectorAll('select[name="decisiones"]');
+    const selects = document.querySelectorAll('select[name="decisiones"]');
     let include = 0, exclude = 0, maybe = 0, pending = 0;
-
     selects.forEach(s => {
-      if (s.value === 'Include')      include++;
+      if (s.value === 'Include') include++;
       else if (s.value === 'Exclude') exclude++;
-      else if (s.value === 'Maybe')   maybe++;
-      else                            pending++;
+      else if (s.value === 'Maybe') maybe++;
+      else pending++;
     });
-
     document.getElementById('cnt-include').textContent = include;
     document.getElementById('cnt-exclude').textContent = exclude;
     document.getElementById('cnt-maybe').textContent   = maybe;

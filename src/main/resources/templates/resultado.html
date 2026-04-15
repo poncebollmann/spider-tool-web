@@ -17,8 +17,6 @@
     main { max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; }
     h1 { font-size: 22px; font-weight: bold; color: #263238; margin-bottom: 6px; }
     .subtitulo { font-size: 13px; color: #888; margin-bottom: 28px; }
-
-    /* COMPONENTES */
     .componentes { background: white; border: 1px solid #eee; border-radius: 12px; padding: 20px; margin-bottom: 24px; }
     .componentes h2 { font-size: 13px; font-weight: bold; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; }
     .comp-fila { display: flex; align-items: baseline; gap: 12px; padding: 6px 0; border-bottom: 1px solid #f5f5f5; font-size: 14px; }
@@ -26,8 +24,6 @@
     .comp-letra { font-weight: bold; color: #534AB7; width: 28px; flex-shrink: 0; }
     .comp-nombre { color: #888; font-size: 12px; width: 160px; flex-shrink: 0; }
     .comp-valor { color: #263238; }
-
-    /* CADENAS */
     .cadenas { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
     .cadena-card { background: white; border: 1px solid #eee; border-radius: 12px; overflow: hidden; }
     .cadena-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid #f5f5f5; }
@@ -42,16 +38,21 @@
     .btn-copiar:hover { background: #f5f5f5; }
     .btn-copiar.copiado { background: #E1F5EE; color: #0F6E56; border-color: #0F6E56; }
     .cadena-body { padding: 14px 16px; font-family: monospace; font-size: 12px; color: #263238; line-height: 1.6; word-break: break-word; background: #FAFAFA; }
-
-    /* ACCIONES */
-    .acciones { display: flex; gap: 10px; flex-wrap: wrap; }
+    .acciones { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
     .btn-primary { padding: 11px 24px; border-radius: 6px; background: #534AB7; color: white; border: none; cursor: pointer; font-size: 14px; font-weight: bold; text-decoration: none; }
     .btn-primary:hover { background: #4A148C; }
     .btn-outline { padding: 11px 24px; border-radius: 6px; background: white; color: #263238; border: 1px solid #ddd; cursor: pointer; font-size: 14px; text-decoration: none; }
     .btn-outline:hover { border-color: #aaa; }
-
-    /* INFO */
     .info-box { background: #EEEDFE; border-radius: 8px; padding: 12px 16px; font-size: 12px; color: #3C3489; margin-bottom: 24px; line-height: 1.6; }
+    .siguiente-paso { background: #F8F6FF; border: 1px solid #CECBF6; border-radius: 12px; padding: 22px 24px; }
+    .siguiente-paso .sp-tag { font-size: 10px; font-weight: bold; color: #534AB7; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .siguiente-paso .sp-titulo { font-size: 15px; font-weight: bold; color: #263238; margin-bottom: 8px; }
+    .siguiente-paso .sp-desc { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 16px; }
+    .sp-pasos { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+    .sp-paso { background: white; border: 1px solid #eee; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #444; flex: 1; min-width: 160px; line-height: 1.5; }
+    .sp-paso strong { display: block; color: #534AB7; margin-bottom: 3px; font-size: 11px; }
+    .sp-btn { display: inline-block; padding: 11px 22px; background: #534AB7; color: white; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: bold; }
+    .sp-btn:hover { background: #4A148C; }
   </style>
 </head>
 <body>
@@ -68,6 +69,7 @@
     <a class="nav-link" href="/spider">← Nueva búsqueda</a>
     <a class="nav-link" href="/prisma">PRISMA</a>
     <a class="nav-link" href="/zotero">Zotero</a>
+    <a class="nav-link" href="/manual">Manual</a>
   </div>
 </nav>
 
@@ -75,7 +77,6 @@
   <h1>Cadenas de búsqueda generadas</h1>
   <p class="subtitulo">Copia la cadena correspondiente a cada base de datos y pégala directamente en el buscador.</p>
 
-  <!-- COMPONENTES -->
   <div class="componentes">
     <h2>Componentes del protocolo</h2>
     <div th:if="${searchRequest.sample != null and !searchRequest.sample.isEmpty()}" class="comp-fila">
@@ -114,9 +115,7 @@
     Cada cadena está adaptada a la sintaxis oficial de la base de datos. Cópialas con el botón y pégalas directamente en el campo de búsqueda avanzada.
   </div>
 
-  <!-- CADENAS -->
   <div class="cadenas">
-
     <div class="cadena-card">
       <div class="cadena-header">
         <div class="cadena-db">
@@ -160,13 +159,25 @@
       </div>
       <div class="cadena-body" id="cadena-pubmed" th:text="${cadenaPubMed}"></div>
     </div>
-
   </div>
 
   <div class="acciones">
     <a class="btn-primary" href="/spider">← Nueva búsqueda</a>
     <a class="btn-outline" href="/prisma">Ir al diagrama PRISMA</a>
     <a class="btn-outline" href="/zotero">Ir a Zotero</a>
+  </div>
+
+  <!-- SIGUIENTE PASO -->
+  <div class="siguiente-paso">
+    <div class="sp-tag">Siguiente paso</div>
+    <div class="sp-titulo">Busca en las bases de datos y guarda en Zotero</div>
+    <div class="sp-desc">Copia la cadena de búsqueda y úsala en Scopus, Web of Science o PubMed. Guarda los resultados en una colección de tu biblioteca Zotero, sincronízala y vuelve aquí para clasificar los estudios.</div>
+    <div class="sp-pasos">
+      <div class="sp-paso"><strong>1. Busca en la BD</strong>Pega la cadena en Scopus, WoS o PubMed y exporta los resultados.</div>
+      <div class="sp-paso"><strong>2. Guarda en Zotero</strong>Importa los resultados en una colección y sincroniza con la nube.</div>
+      <div class="sp-paso"><strong>3. Clasifica aquí</strong>Conecta tu Zotero y registra las decisiones de inclusión/exclusión.</div>
+    </div>
+    <a class="sp-btn" href="/zotero">Continuar con Zotero →</a>
   </div>
 </main>
 

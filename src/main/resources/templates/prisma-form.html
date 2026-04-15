@@ -4,75 +4,46 @@
     <meta charset="UTF-8">
     <title>Diagrama PRISMA 2020</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 750px;
-            margin: 40px auto;
-            padding: 0 20px;
-            background-color: #f5f5f5;
-        }
+        body { font-family: Arial, sans-serif; max-width: 750px; margin: 40px auto; padding: 0 20px; background-color: #f5f5f5; }
         h1 { color: #1565C0; border-bottom: 2px solid #1565C0; padding-bottom: 10px; }
-        h2 { font-size: 14px; color: white; padding: 8px 12px;
-            border-radius: 4px; margin: 24px 0 10px 0; }
+        h2 { font-size: 14px; color: white; padding: 8px 12px; border-radius: 4px; margin: 24px 0 10px 0; }
         h2.identificacion { background-color: #1565C0; }
         h2.cribado        { background-color: #1565C0; }
         h2.exclusion      { background-color: #E65100; }
         h2.inclusion      { background-color: #2E7D32; }
-        .campo {
-            background: white;
-            padding: 14px;
-            margin-bottom: 10px;
-            border-radius: 6px;
-            border-left: 4px solid #1565C0;
-        }
-        .campo.exclusion  { border-left-color: #E65100; }
-        .campo.inclusion  { border-left-color: #2E7D32; }
-        label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 4px;
-            color: #263238;
-            font-size: 13px;
-        }
-        .desc {
-            font-size: 11px;
-            color: #888;
-            margin-bottom: 6px;
-        }
-        input[type="number"] {
-            width: 100%;
-            padding: 7px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 14px;
-        }
-        button {
-            background-color: #2E7D32;
-            color: white;
-            padding: 12px 28px;
-            border: none;
-            border-radius: 4px;
-            font-size: 15px;
-            cursor: pointer;
-            margin-top: 16px;
-            width: 100%;
-        }
+        .campo { background: white; padding: 14px; margin-bottom: 10px; border-radius: 6px; border-left: 4px solid #1565C0; }
+        .campo.exclusion { border-left-color: #E65100; }
+        .campo.inclusion { border-left-color: #2E7D32; }
+        label { font-weight: bold; display: block; margin-bottom: 4px; color: #263238; font-size: 13px; }
+        .desc { font-size: 11px; color: #888; margin-bottom: 6px; }
+        input[type="number"] { width: 100%; padding: 7px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; }
+        button { background-color: #2E7D32; color: white; padding: 12px 28px; border: none; border-radius: 4px; font-size: 15px; cursor: pointer; margin-top: 16px; width: 100%; }
         button:hover { background-color: #1B5E20; }
         nav { margin-bottom: 20px; font-size: 13px; }
         nav a { color: #1565C0; text-decoration: none; margin-right: 16px; }
         nav a:hover { text-decoration: underline; }
+        .siguiente-paso { margin-top: 24px; background: #F8F6FF; border: 1px solid #CECBF6; border-radius: 12px; padding: 22px 24px; }
+        .sp-tag { font-size: 10px; font-weight: bold; color: #534AB7; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .sp-titulo { font-size: 15px; font-weight: bold; color: #263238; margin-bottom: 8px; }
+        .sp-desc { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 16px; }
+        .sp-pasos { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+        .sp-paso { background: white; border: 1px solid #eee; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #444; flex: 1; min-width: 160px; line-height: 1.5; }
+        .sp-paso strong { display: block; color: #534AB7; margin-bottom: 3px; font-size: 11px; }
+        .sp-btn { display: inline-block; padding: 11px 22px; background: #534AB7; color: white; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: bold; }
+        .sp-btn:hover { background: #4A148C; }
     </style>
 </head>
 <body>
 
 <nav>
-    <a href="/">← SPIDER Tool</a>
+    <a href="/">← Inicio</a>
+    <a href="/zotero">← Zotero</a>
     <a href="/prisma">Diagrama PRISMA</a>
+    <a href="/manual">Manual</a>
 </nav>
 
 <h1>Diagrama PRISMA 2020</h1>
-<p style="font-size:13px; color:#555;">
+<p style="font-size:13px; color:#555; margin-bottom: 20px;">
     Introduce los datos de tu proceso de revisión sistemática.
     El diagrama se generará siguiendo el estándar
     <strong>PRISMA 2020 — Databases and Registers only</strong>.
@@ -80,7 +51,6 @@
 
 <form th:action="@{/prisma/generar}" th:object="${prismaRequest}" method="post">
 
-    <!-- IDENTIFICATION -->
     <h2 class="identificacion">IDENTIFICATION</h2>
 
     <div class="campo">
@@ -88,32 +58,27 @@
         <p class="desc">Total de registros encontrados en bases de datos (Scopus, PubMed, etc.)</p>
         <input type="number" th:field="*{registrosBD}" min="0" value="0"/>
     </div>
-
     <div class="campo">
         <label>Records identified from Registers (n)</label>
         <p class="desc">Registros identificados en registros de ensayos u otras fuentes estructuradas.</p>
         <input type="number" th:field="*{registrosRegistros}" min="0" value="0"/>
     </div>
-
     <div class="campo exclusion">
         <label>Duplicate records removed (n)</label>
         <p class="desc">Registros duplicados eliminados antes del cribado.</p>
         <input type="number" th:field="*{duplicadosEliminados}" min="0" value="0"/>
     </div>
-
     <div class="campo exclusion">
         <label>Records marked as ineligible by automation tools (n)</label>
         <p class="desc">Registros excluidos automáticamente por herramientas de cribado asistido.</p>
         <input type="number" th:field="*{excluidosAutomatizacion}" min="0" value="0"/>
     </div>
-
     <div class="campo exclusion">
         <label>Records removed for other reasons (n)</label>
         <p class="desc">Registros eliminados por otros motivos antes del cribado formal.</p>
         <input type="number" th:field="*{excluidosOtrasRazones}" min="0" value="0"/>
     </div>
 
-    <!-- SCREENING -->
     <h2 class="cribado">SCREENING</h2>
 
     <div class="campo">
@@ -121,32 +86,27 @@
         <p class="desc">Registros sometidos a cribado por título y resumen.</p>
         <input type="number" th:field="*{registrosCribados}" min="0" value="0"/>
     </div>
-
     <div class="campo exclusion">
         <label>Records excluded (n)</label>
         <p class="desc">Registros excluidos tras cribado por título y resumen.</p>
         <input type="number" th:field="*{registrosExcluidos}" min="0" value="0"/>
     </div>
-
     <div class="campo">
         <label>Reports sought for retrieval (n)</label>
         <p class="desc">Informes buscados para recuperación de texto completo.</p>
         <input type="number" th:field="*{informesBuscados}" min="0" value="0"/>
     </div>
-
     <div class="campo exclusion">
         <label>Reports not retrieved (n)</label>
         <p class="desc">Informes no recuperados tras búsqueda activa.</p>
         <input type="number" th:field="*{informesNoRecuperados}" min="0" value="0"/>
     </div>
-
     <div class="campo">
         <label>Reports assessed for eligibility (n)</label>
         <p class="desc">Informes evaluados a texto completo para determinar elegibilidad.</p>
         <input type="number" th:field="*{informesElegibilidad}" min="0" value="0"/>
     </div>
 
-    <!-- EXCLUSION REASONS -->
     <h2 class="exclusion">REPORTS EXCLUDED — Motivos de exclusión</h2>
 
     <div class="campo exclusion">
@@ -154,44 +114,37 @@
         <p class="desc">Diseño de estudio no elegible según criterios de inclusión.</p>
         <input type="number" th:field="*{excluidosDiseno}" min="0" value="0"/>
     </div>
-
     <div class="campo exclusion">
         <label>Ineligible population (n)</label>
         <p class="desc">Población no elegible según criterios de inclusión.</p>
         <input type="number" th:field="*{excluidosPoblacion}" min="0" value="0"/>
     </div>
-
     <div class="campo exclusion">
         <label>Ineligible intervention / phenomenon (n)</label>
         <p class="desc">Intervención o fenómeno de interés no elegible.</p>
         <input type="number" th:field="*{excluidosIntervencion}" min="0" value="0"/>
     </div>
-
     <div class="campo exclusion">
         <label>Ineligible outcome (n)</label>
         <p class="desc">Resultado o medida de desenlace no elegible.</p>
         <input type="number" th:field="*{excluidosOutcome}" min="0" value="0"/>
     </div>
-
     <div class="campo exclusion">
         <label>Full text unavailable (n)</label>
         <p class="desc">Texto completo no disponible tras búsqueda activa.</p>
         <input type="number" th:field="*{excluidosTextoNoDisponible}" min="0" value="0"/>
     </div>
-
     <div class="campo exclusion">
         <label>Late duplicate (n)</label>
         <p class="desc">Duplicado detectado tardíamente en fase de elegibilidad.</p>
         <input type="number" th:field="*{excluidosDuplicadoTardio}" min="0" value="0"/>
     </div>
-
     <div class="campo exclusion">
         <label>Other reasons (n)</label>
         <p class="desc">Otros motivos de exclusión no contemplados anteriormente.</p>
         <input type="number" th:field="*{excluidosOtros}" min="0" value="0"/>
     </div>
 
-    <!-- INCLUDED -->
     <h2 class="inclusion">INCLUDED</h2>
 
     <div class="campo inclusion">
@@ -199,7 +152,6 @@
         <p class="desc">Estudios finales incluidos en la revisión sistemática.</p>
         <input type="number" th:field="*{estudiosIncluidos}" min="0" value="0"/>
     </div>
-
     <div class="campo inclusion">
         <label>Reports of included studies (n)</label>
         <p class="desc">Total de informes asociados a los estudios incluidos.</p>
@@ -209,6 +161,19 @@
     <button type="submit">Generar y descargar diagrama PRISMA 2020 →</button>
 
 </form>
+
+<!-- SIGUIENTE PASO -->
+<div class="siguiente-paso">
+    <div class="sp-tag">Siguiente paso</div>
+    <div class="sp-titulo">Completa el Checklist PRISMA 2020</div>
+    <div class="sp-desc">Una vez generado el diagrama, completa los 27 ítems del checklist oficial PRISMA 2020 para asegurarte de que tu manuscrito cumple todos los estándares de reporte antes de enviarlo a la revista.</div>
+    <div class="sp-pasos">
+        <div class="sp-paso"><strong>27 ítems</strong>Cubre título, abstract, métodos, resultados, discusión e información adicional.</div>
+        <div class="sp-paso"><strong>Número de página</strong>Indica en qué página de tu manuscrito aparece cada ítem reportado.</div>
+        <div class="sp-paso"><strong>Exporta en CSV</strong>Listo para adjuntar al manuscrito al enviar a la revista.</div>
+    </div>
+    <a class="sp-btn" href="/prisma-checklist">Continuar con el Checklist PRISMA 2020 →</a>
+</div>
 
 </body>
 </html>
