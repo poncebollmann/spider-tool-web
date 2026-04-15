@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mi revisión — SysReview Tool</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #1A1040; color: white; min-height: 100vh; }
+
+    .topnav { background: rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 54px; }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark { width: 30px; height: 30px; background: #7F77DD; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .logo-mark svg { width: 16px; height: 16px; fill: white; }
+    .logo-name { font-size: 15px; font-weight: bold; color: white; }
+    .logo-badge { font-size: 10px; background: rgba(127,119,221,0.25); color: #CECBF6; padding: 2px 8px; border-radius: 99px; border: 1px solid rgba(127,119,221,0.4); }
+    .nav-link { font-size: 13px; padding: 7px 14px; border-radius: 6px; color: rgba(255,255,255,0.6); text-decoration: none; }
+    .nav-link:hover { background: rgba(255,255,255,0.07); color: white; }
+
+    main { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    .page-header { margin-bottom: 32px; }
+    .page-header h1 { font-size: 24px; font-weight: bold; color: white; margin-bottom: 6px; }
+    .page-header p { font-size: 13px; color: rgba(255,255,255,0.5); }
+
+    /* PROGRESO VISUAL */
+    .progress-bar { display: flex; align-items: center; margin-bottom: 36px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px 24px; gap: 0; }
+    .prog-step { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; }
+    .prog-step:not(:last-child)::after { content: ''; position: absolute; top: 16px; left: 60%; width: 80%; height: 2px; background: rgba(255,255,255,0.1); z-index: 0; }
+    .prog-step.done:not(:last-child)::after { background: #7F77DD; }
+    .prog-circle { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; z-index: 1; margin-bottom: 8px; }
+    .prog-circle.done    { background: #7F77DD; color: white; }
+    .prog-circle.active  { background: rgba(127,119,221,0.2); border: 2px solid #7F77DD; color: #AFA9EC; }
+    .prog-circle.pending { background: rgba(255,255,255,0.06); border: 2px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.3); }
+    .prog-label { font-size: 11px; color: rgba(255,255,255,0.5); text-align: center; }
+    .prog-label.done   { color: #AFA9EC; }
+    .prog-label.active { color: white; font-weight: bold; }
+
+    /* PASOS */
+    .pasos { display: flex; flex-direction: column; gap: 14px; }
+    .paso-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px 24px; display: flex; align-items: center; gap: 20px; text-decoration: none; transition: border-color 0.15s, background 0.15s; }
+    .paso-card:hover { background: rgba(255,255,255,0.07); border-color: rgba(127,119,221,0.4); }
+    .paso-card.activo { border-color: rgba(127,119,221,0.5); background: rgba(127,119,221,0.08); }
+    .paso-card.completado { border-color: rgba(29,158,117,0.3); background: rgba(29,158,117,0.05); }
+
+    .paso-num { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: bold; flex-shrink: 0; }
+    .paso-num.purple { background: rgba(127,119,221,0.2); color: #AFA9EC; }
+    .paso-num.teal   { background: rgba(29,158,117,0.2); color: #5DCAA5; }
+    .paso-num.coral  { background: rgba(216,90,48,0.2); color: #F0997B; }
+    .paso-num.green  { background: rgba(99,153,34,0.2); color: #97C459; }
+
+    .paso-info { flex: 1; }
+    .paso-titulo { font-size: 15px; font-weight: bold; color: white; margin-bottom: 4px; }
+    .paso-desc { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.5; margin-bottom: 8px; }
+    .paso-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .paso-tag { font-size: 10px; padding: 2px 8px; border-radius: 99px; }
+    .tag-purple { background: rgba(127,119,221,0.15); color: #CECBF6; border: 1px solid rgba(127,119,221,0.3); }
+    .tag-teal   { background: rgba(29,158,117,0.15); color: #9FE1CB; border: 1px solid rgba(29,158,117,0.3); }
+    .tag-coral  { background: rgba(216,90,48,0.15); color: #F5C4B3; border: 1px solid rgba(216,90,48,0.3); }
+    .tag-green  { background: rgba(99,153,34,0.15); color: #C0DD97; border: 1px solid rgba(99,153,34,0.3); }
+
+    .paso-accion { display: flex; align-items: center; gap: 8px; }
+    .btn-ir { padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: bold; text-decoration: none; white-space: nowrap; }
+    .btn-ir.purple { background: #7F77DD; color: white; }
+    .btn-ir.teal   { background: #1D9E75; color: white; }
+    .btn-ir.coral  { background: #D85A30; color: white; }
+    .btn-ir.green  { background: #639922; color: white; }
+    .btn-ir:hover  { opacity: 0.9; }
+    .estado-badge { font-size: 10px; padding: 3px 8px; border-radius: 99px; }
+    .badge-pendiente  { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.1); }
+    .badge-en-curso   { background: rgba(127,119,221,0.15); color: #AFA9EC; border: 1px solid rgba(127,119,221,0.3); }
+    .badge-completado { background: rgba(29,158,117,0.15); color: #5DCAA5; border: 1px solid rgba(29,158,117,0.3); }
+
+    /* ASISTENTE */
+    .asistente-card { margin-top: 28px; background: rgba(186,117,23,0.08); border: 1px solid rgba(186,117,23,0.2); border-radius: 12px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .asistente-info h3 { font-size: 14px; font-weight: bold; color: white; margin-bottom: 4px; }
+    .asistente-info p  { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+    .btn-asistente { padding: 9px 18px; border-radius: 8px; background: rgba(186,117,23,0.3); color: #FAC775; border: 1px solid rgba(186,117,23,0.4); font-size: 13px; font-weight: bold; text-decoration: none; white-space: nowrap; }
+    .btn-asistente:hover { background: rgba(186,117,23,0.4); }
+
+    footer { border-top: 1px solid rgba(255,255,255,0.07); padding: 14px 32px; display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.3); }
+    footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="logo" href="/">
+    <div class="logo-mark">
+      <svg viewBox="0 0 16 16"><path d="M2 2h12v2H2V2zm0 4h8v2H2V6zm0 4h5v2H2v-2z"/></svg>
+    </div>
+    <span class="logo-name">SysReview Tool</span>
+    <span class="logo-badge">PRISMA 2020</span>
+  </a>
+  <div style="display:flex; gap:4px;">
+    <a class="nav-link" href="/">Inicio</a>
+    <a class="nav-link" href="/manual">Manual</a>
+    <a class="nav-link" href="/asistente">Asistente IA</a>
+  </div>
+</nav>
+
+<main>
+  <div class="page-header">
+    <h1>Mi revisión sistemática</h1>
+    <p>Sigue el flujo de trabajo paso a paso. Cada herramienta te guiará al siguiente paso.</p>
+  </div>
+
+  <!-- BARRA DE PROGRESO -->
+  <div class="progress-bar">
+    <div class="prog-step">
+      <div class="prog-circle active">1</div>
+      <div class="prog-label active">Protocolo</div>
+    </div>
+    <div class="prog-step">
+      <div class="prog-circle pending">2</div>
+      <div class="prog-label pending">Zotero</div>
+    </div>
+    <div class="prog-step">
+      <div class="prog-circle pending">3</div>
+      <div class="prog-label pending">PRISMA</div>
+    </div>
+    <div class="prog-step">
+      <div class="prog-circle pending">4</div>
+      <div class="prog-label pending">Checklist</div>
+    </div>
+  </div>
+
+  <!-- PASOS -->
+  <div class="pasos">
+
+    <a class="paso-card activo" href="/spider">
+      <div class="paso-num purple">1</div>
+      <div class="paso-info">
+        <div class="paso-titulo">Protocolo de búsqueda</div>
+        <div class="paso-desc">Define tu pregunta de investigación con SPIDER, PICO o PICOS y genera las cadenas booleanas para Scopus, Web of Science y PubMed.</div>
+        <div class="paso-tags">
+          <span class="paso-tag tag-purple">SPIDER</span>
+          <span class="paso-tag tag-purple">PICO</span>
+          <span class="paso-tag tag-purple">PICOS</span>
+          <span class="paso-tag tag-purple">Cadena booleana</span>
+          <span class="paso-tag tag-purple">Scopus · WoS · PubMed</span>
+        </div>
+      </div>
+      <div class="paso-accion">
+        <span class="estado-badge badge-en-curso">En curso</span>
+        <a class="btn-ir purple" href="/spider">Ir →</a>
+      </div>
+    </a>
+
+    <a class="paso-card" href="/zotero">
+      <div class="paso-num teal">2</div>
+      <div class="paso-info">
+        <div class="paso-titulo">Extracción desde Zotero</div>
+        <div class="paso-desc">Conecta tu biblioteca Zotero, importa los estudios encontrados y registra las decisiones de inclusión y exclusión para cada uno.</div>
+        <div class="paso-tags">
+          <span class="paso-tag tag-teal">Zotero API</span>
+          <span class="paso-tag tag-teal">Include / Exclude</span>
+          <span class="paso-tag tag-teal">CSV PRISMA 2020</span>
+        </div>
+      </div>
+      <div class="paso-accion">
+        <span class="estado-badge badge-pendiente">Pendiente</span>
+        <a class="btn-ir teal" href="/zotero">Ir →</a>
+      </div>
+    </a>
+
+    <a class="paso-card" href="/prisma">
+      <div class="paso-num coral">3</div>
+      <div class="paso-info">
+        <div class="paso-titulo">Diagrama PRISMA 2020</div>
+        <div class="paso-desc">Genera el diagrama de flujo oficial PRISMA 2020 con los números de cada fase del cribado. Descárgalo en SVG para incluirlo en tu manuscrito.</div>
+        <div class="paso-tags">
+          <span class="paso-tag tag-coral">PRISMA 2020</span>
+          <span class="paso-tag tag-coral">SVG descargable</span>
+          <span class="paso-tag tag-coral">Identification · Screening · Included</span>
+        </div>
+      </div>
+      <div class="paso-accion">
+        <span class="estado-badge badge-pendiente">Pendiente</span>
+        <a class="btn-ir coral" href="/prisma">Ir →</a>
+      </div>
+    </a>
+
+    <a class="paso-card" href="/prisma-checklist">
+      <div class="paso-num green">4</div>
+      <div class="paso-info">
+        <div class="paso-titulo">Checklist PRISMA 2020</div>
+        <div class="paso-desc">Completa los 27 ítems del checklist oficial PRISMA 2020. Indica en qué página de tu manuscrito aparece cada ítem y exporta el documento para adjuntarlo a la revista.</div>
+        <div class="paso-tags">
+          <span class="paso-tag tag-green">27 ítems</span>
+          <span class="paso-tag tag-green">CSV exportable</span>
+          <span class="paso-tag tag-green">Listo para revista</span>
+        </div>
+      </div>
+      <div class="paso-accion">
+        <span class="estado-badge badge-pendiente">Pendiente</span>
+        <a class="btn-ir green" href="/prisma-checklist">Ir →</a>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ASISTENTE -->
+  <div class="asistente-card">
+    <div class="asistente-info">
+      <h3>¿Tienes dudas en algún paso?</h3>
+      <p>El asistente IA especializado en revisiones sistemáticas puede ayudarte a evaluar estudios, mejorar tu protocolo o resolver dudas sobre PRISMA 2020 en cualquier momento.</p>
+    </div>
+    <a class="btn-asistente" href="/asistente">Consultar asistente IA →</a>
+  </div>
+
+</main>
+
+<footer>
+  <div>SysReview Tool ·</div>
+  <div>Desarrollado y propiedad de <a href="mailto:poncebollmann@gmail.com">Felipe Ponce Bollmann</a>, Sociólogo e investigador multidisciplinar · <a href="mailto:poncebollmann@gmail.com">poncebollmann@gmail.com</a></div>
+</footer>
+
+</body>
+</html>

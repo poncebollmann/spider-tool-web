@@ -6,8 +6,6 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Arial, sans-serif; background: #1A1040; color: white; min-height: 100vh; display: flex; flex-direction: column; }
-
-    /* NAV */
     .topnav { background: rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 54px; position: sticky; top: 0; z-index: 200; }
     .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
     .logo-mark { width: 30px; height: 30px; background: #7F77DD; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
@@ -15,26 +13,11 @@
     .logo-name { font-size: 15px; font-weight: bold; color: white; }
     .logo-badge { font-size: 10px; background: rgba(127,119,221,0.25); color: #CECBF6; padding: 2px 8px; border-radius: 99px; border: 1px solid rgba(127,119,221,0.4); }
     .nav-right { display: flex; gap: 8px; align-items: center; position: relative; }
-
-    /* MENU BTN */
     .menu-btn { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 7px; padding: 7px 14px; cursor: pointer; color: rgba(255,255,255,0.85); font-size: 13px; user-select: none; }
     .menu-btn:hover { background: rgba(255,255,255,0.1); }
     .btn-ai { font-size: 12px; padding: 7px 14px; border-radius: 7px; background: #534AB7; color: white; border: none; cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 5px; }
     .btn-ai:hover { background: #4A148C; }
-
-    /* DROPDOWN */
-    .dropdown {
-      display: none;
-      position: absolute;
-      top: calc(100% + 8px);
-      right: 0;
-      background: #221550;
-      border: 1px solid rgba(127,119,221,0.25);
-      border-radius: 12px;
-      padding: 8px;
-      width: 270px;
-      z-index: 300;
-    }
+    .dropdown { display: none; position: absolute; top: calc(100% + 8px); right: 0; background: #221550; border: 1px solid rgba(127,119,221,0.25); border-radius: 12px; padding: 8px; width: 270px; z-index: 300; }
     .dropdown.open { display: block; }
     .dd-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 8px; cursor: pointer; text-decoration: none; }
     .dd-item:hover { background: rgba(255,255,255,0.06); }
@@ -47,11 +30,7 @@
     .dd-name { font-size: 13px; font-weight: bold; color: white; margin-bottom: 2px; }
     .dd-sub  { font-size: 10px; color: rgba(255,255,255,0.4); }
     .dd-sep  { height: 1px; background: rgba(255,255,255,0.07); margin: 6px 12px; }
-
-    /* MAIN */
     main { flex: 1; max-width: 960px; margin: 0 auto; width: 100%; padding: 36px 24px 48px; }
-
-    /* HERO */
     .hero { text-align: center; padding: 32px 0 28px; }
     .hero-tag { display: inline-block; font-size: 11px; background: rgba(127,119,221,0.18); color: #CECBF6; padding: 4px 14px; border-radius: 99px; border: 1px solid rgba(127,119,221,0.35); margin-bottom: 16px; }
     .hero h1 { font-size: 34px; font-weight: bold; color: white; line-height: 1.25; margin-bottom: 12px; }
@@ -62,8 +41,6 @@
     .btn-primary:hover { background: #534AB7; }
     .btn-outline { padding: 11px 24px; border-radius: 8px; background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.15); cursor: pointer; font-size: 14px; text-decoration: none; }
     .btn-outline:hover { border-color: rgba(255,255,255,0.3); }
-
-    /* PRISMA */
     .prisma-section { background: rgba(127,119,221,0.08); border: 1px solid rgba(127,119,221,0.2); border-radius: 14px; padding: 24px 28px; display: flex; align-items: center; gap: 28px; margin-bottom: 20px; }
     .prisma-flow { display: flex; align-items: center; flex: 1; }
     .p-fase { flex: 1; text-align: center; }
@@ -77,28 +54,21 @@
     .prisma-info p { font-size: 11px; color: rgba(255,255,255,0.4); line-height: 1.5; margin-bottom: 10px; }
     .prisma-link { font-size: 11px; color: #AFA9EC; text-decoration: none; }
     .prisma-link:hover { color: #CECBF6; }
-
-    /* FLUJO */
     .section-title { font-size: 10px; font-weight: bold; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; }
     .flow-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
     .flow-item { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 14px; }
     .flow-num { font-size: 10px; color: #AFA9EC; margin-bottom: 5px; font-weight: bold; }
     .flow-text { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.5; }
-
-    /* PRISMA BANNER */
     .prisma-banner { background: rgba(127,119,221,0.1); border: 1px solid rgba(127,119,221,0.2); border-radius: 8px; padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
     .pb-left { display: flex; align-items: center; gap: 10px; }
     .pb-dot { width: 7px; height: 7px; border-radius: 50%; background: #7F77DD; flex-shrink: 0; }
     .pb-text { font-size: 12px; color: rgba(255,255,255,0.5); }
     .pb-link { font-size: 11px; color: #AFA9EC; font-weight: bold; text-decoration: none; white-space: nowrap; }
-
-    /* FOOTER */
     footer { background: rgba(0,0,0,0.2); border-top: 1px solid rgba(255,255,255,0.07); padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; }
-    .footer-left { font-size: 11px; color: rgba(255,255,255,0.2); }
-    .footer-author { font-size: 11px; color: rgba(255,255,255,0.2); }
-    .footer-author a { color: rgba(255,255,255,0.35); text-decoration: none; }
+    .footer-left { font-size: 11px; color: rgba(255,255,255,0.5); }
+    .footer-author { font-size: 11px; color: rgba(255,255,255,0.5); }
+    .footer-author a { color: rgba(255,255,255,0.7); text-decoration: none; }
     .footer-author a:hover { color: #AFA9EC; }
-
     @media (max-width: 700px) {
       .flow-grid { grid-template-columns: 1fr; }
       .prisma-section { flex-direction: column; }
@@ -122,8 +92,14 @@
       Herramientas
       <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
     </div>
-
     <div class="dropdown" id="dropdown">
+      <a class="dd-item" href="/revision">
+        <div class="dd-icon purple">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="#AFA9EC"><path d="M3 3h14v2H3V3zm0 4h14v2H3V7zm0 4h9v2H3v-2z"/></svg>
+        </div>
+        <div><div class="dd-name">Mi revisión</div><div class="dd-sub">Dashboard · Flujo guiado</div></div>
+      </a>
+      <div class="dd-sep"></div>
       <a class="dd-item" href="/spider">
         <div class="dd-icon purple">
           <svg width="16" height="16" viewBox="0 0 20 20" fill="#AFA9EC"><rect x="2" y="2" width="16" height="3" rx="1"/><rect x="2" y="8" width="12" height="3" rx="1"/><rect x="2" y="14" width="8" height="3" rx="1"/></svg>
@@ -162,7 +138,6 @@
         <div><div class="dd-name">Manual de uso</div><div class="dd-sub">Guía completa</div></div>
       </a>
     </div>
-
     <a class="btn-ai" href="/asistente">
       <svg width="12" height="12" viewBox="0 0 16 16" fill="white"><circle cx="8" cy="8" r="3"/><line x1="8" y1="1" x2="8" y2="3" stroke="white" stroke-width="1.5"/><line x1="8" y1="13" x2="8" y2="15" stroke="white" stroke-width="1.5"/><line x1="1" y1="8" x2="3" y2="8" stroke="white" stroke-width="1.5"/><line x1="13" y1="8" x2="15" y2="8" stroke="white" stroke-width="1.5"/></svg>
       Asistente IA
@@ -176,7 +151,7 @@
     <h1>Revisiones sistemáticas<br><span>con soporte IA</span></h1>
     <p>Genera protocolos de búsqueda, diagramas PRISMA 2020, extrae datos de Zotero y consulta al asistente especializado.</p>
     <div class="hero-btns">
-      <a class="btn-primary" href="/spider">Comenzar revisión →</a>
+      <a class="btn-primary" href="/revision">Comenzar revisión →</a>
       <a class="btn-outline" href="/manual">Manual de uso</a>
       <a class="btn-outline" href="/asistente">Consultar asistente IA</a>
     </div>
@@ -184,21 +159,13 @@
 
   <div class="prisma-section">
     <div class="prisma-flow">
-      <div class="p-fase">
-        <div class="p-box"><div class="p-label">Identification</div><div class="p-sub">Búsqueda en BD</div></div>
-      </div>
+      <div class="p-fase"><div class="p-box"><div class="p-label">Identification</div><div class="p-sub">Búsqueda en BD</div></div></div>
       <div class="p-arrow">›</div>
-      <div class="p-fase">
-        <div class="p-box"><div class="p-label">Screening</div><div class="p-sub">Título · Resumen</div></div>
-      </div>
+      <div class="p-fase"><div class="p-box"><div class="p-label">Screening</div><div class="p-sub">Título · Resumen</div></div></div>
       <div class="p-arrow">›</div>
-      <div class="p-fase">
-        <div class="p-box"><div class="p-label">Eligibility</div><div class="p-sub">Texto completo</div></div>
-      </div>
+      <div class="p-fase"><div class="p-box"><div class="p-label">Eligibility</div><div class="p-sub">Texto completo</div></div></div>
       <div class="p-arrow">›</div>
-      <div class="p-fase">
-        <div class="p-box included"><div class="p-label">Included</div><div class="p-sub">Estudios finales</div></div>
-      </div>
+      <div class="p-fase"><div class="p-box included"><div class="p-label">Included</div><div class="p-sub">Estudios finales</div></div></div>
     </div>
     <div class="prisma-info">
       <h3>PRISMA 2020</h3>
@@ -209,18 +176,9 @@
 
   <div class="section-title">Flujo de trabajo recomendado</div>
   <div class="flow-grid">
-    <div class="flow-item">
-      <div class="flow-num">Paso 1</div>
-      <div class="flow-text">Define tu protocolo SPIDER o PICO y genera las cadenas para Scopus, WoS y PubMed</div>
-    </div>
-    <div class="flow-item">
-      <div class="flow-num">Paso 2</div>
-      <div class="flow-text">Importa resultados desde Zotero y registra inclusiones y exclusiones</div>
-    </div>
-    <div class="flow-item">
-      <div class="flow-num">Paso 3</div>
-      <div class="flow-text">Genera el diagrama PRISMA, completa el checklist y exporta en CSV</div>
-    </div>
+    <div class="flow-item"><div class="flow-num">Paso 1</div><div class="flow-text">Define tu protocolo SPIDER o PICO y genera las cadenas para Scopus, WoS y PubMed</div></div>
+    <div class="flow-item"><div class="flow-num">Paso 2</div><div class="flow-text">Importa resultados desde Zotero y registra inclusiones y exclusiones</div></div>
+    <div class="flow-item"><div class="flow-num">Paso 3</div><div class="flow-text">Genera el diagrama PRISMA, completa el checklist y exporta en CSV</div></div>
   </div>
 
   <div class="prisma-banner">
