@@ -2,101 +2,262 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>SPIDER Protocol Tool</title>
+    <title>Protocolo de búsqueda — SysReview Tool</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 700px;
-            margin: 40px auto;
-            padding: 0 20px;
-            background-color: #f5f5f5;
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background-color: #f5f5f5; color: #263238; }
+        .topnav { background: white; border-bottom: 1px solid #eee; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 100; }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-mark { width: 30px; height: 30px; background: #534AB7; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .logo-mark svg { width: 16px; height: 16px; fill: white; }
+        .logo-name { font-size: 15px; font-weight: bold; color: #263238; }
+        .logo-badge { font-size: 10px; background: #EEEDFE; color: #534AB7; padding: 2px 8px; border-radius: 99px; }
+        .nav-link { font-size: 13px; padding: 7px 14px; border-radius: 6px; color: #555; text-decoration: none; }
+        .nav-link:hover { background: #f5f5f5; }
+
+        main { max-width: 700px; margin: 0 auto; padding: 40px 24px 80px; }
+        h1 { font-size: 22px; font-weight: bold; color: #263238; margin-bottom: 6px; }
+        .subtitulo { font-size: 13px; color: #888; margin-bottom: 24px; }
+
+        /* SELECTOR DE PROTOCOLO */
+        .proto-selector { display: flex; gap: 8px; margin-bottom: 28px; }
+        .proto-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1.5px solid #ddd;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+            color: #555;
+            transition: all 0.15s;
         }
-        h1 { color: #1565C0; border-bottom: 2px solid #1565C0; padding-bottom: 10px; }
-        .componente {
+        .proto-btn:hover { border-color: #534AB7; color: #534AB7; }
+        .proto-btn.active { border-color: #534AB7; background: #EEEDFE; color: #534AB7; }
+        .proto-btn .proto-sub { font-size: 10px; font-weight: normal; color: #aaa; display: block; margin-top: 2px; }
+        .proto-btn.active .proto-sub { color: #7F77DD; }
+
+        /* CAMPOS */
+        .campo {
             background: white;
             padding: 16px;
-            margin-bottom: 14px;
-            border-radius: 6px;
-            border-left: 4px solid #1565C0;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #534AB7;
+            display: block;
         }
-        label { font-weight: bold; display: block; margin-bottom: 4px; color: #263238; }
-        .descripcion { font-size: 12px; color: #888; margin-bottom: 8px; }
+        .campo.opcional { border-left-color: #ccc; }
+        .campo.oculto { display: none; }
+        .campo-header { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+        .campo-letra { font-size: 11px; font-weight: bold; color: #534AB7; background: #EEEDFE; padding: 2px 7px; border-radius: 99px; }
+        .campo-label { font-size: 13px; font-weight: bold; color: #263238; }
+        .campo-opcional-tag { font-size: 10px; color: #aaa; }
+        .campo-desc { font-size: 11px; color: #888; margin-bottom: 8px; line-height: 1.5; }
         input[type="text"] {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
             font-size: 14px;
+            outline: none;
         }
-        button {
-            background-color: #1565C0;
+        input[type="text"]:focus { border-color: #534AB7; }
+
+        .btn-generar {
+            width: 100%;
+            padding: 13px;
+            border-radius: 8px;
+            background: #534AB7;
             color: white;
-            padding: 12px 28px;
             border: none;
-            border-radius: 4px;
-            font-size: 16px;
             cursor: pointer;
-            margin-top: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            margin-top: 16px;
         }
-        button:hover { background-color: #0D47A1; }
-        nav { margin-bottom: 24px; font-size: 13px; }
-        nav a { color: #1565C0; text-decoration: none; margin-right: 16px; }
-        nav a.zotero { color: #CC2936; }
+        .btn-generar:hover { background: #4A148C; }
+
+        .info-box { background: #EEEDFE; border-radius: 8px; padding: 12px 16px; font-size: 12px; color: #3C3489; margin-bottom: 20px; line-height: 1.6; }
     </style>
 </head>
 <body>
 
-<nav>
-    <a href="/">SPIDER</a>
-    <a href="/prisma">PRISMA</a>
-    <a href="/zotero" class="zotero">Zotero</a>
+<nav class="topnav">
+    <a class="logo" href="/">
+        <div class="logo-mark">
+            <svg viewBox="0 0 16 16"><path d="M2 2h12v2H2V2zm0 4h8v2H2V6zm0 4h5v2H2v-2z"/></svg>
+        </div>
+        <span class="logo-name">SysReview Tool</span>
+        <span class="logo-badge">PRISMA 2020</span>
+    </a>
+    <div style="display:flex; gap:4px;">
+        <a class="nav-link" href="/prisma">PRISMA</a>
+        <a class="nav-link" href="/zotero">Zotero</a>
+        <a class="nav-link" href="/asistente">Asistente IA</a>
+        <a class="nav-link" href="/manual">Manual</a>
+    </div>
 </nav>
 
-<h1>SPIDER Protocol Tool v2.0</h1>
-<p>Completa los componentes del protocolo SPIDER para generar tu cadena de búsqueda booleana.</p>
+<main>
+    <h1>Protocolo de búsqueda</h1>
+    <p class="subtitulo">Selecciona el protocolo, completa los componentes y genera las cadenas de búsqueda para Scopus, Web of Science y PubMed.</p>
 
-<form th:action="@{/generar}" th:object="${searchRequest}" method="post">
-
-    <div class="componente">
-        <label>[S] Sample</label>
-        <p class="descripcion">¿Quién es la población de estudio? Ej: adolescentes, profesionales sanitarios</p>
-        <input type="text" th:field="*{sample}" placeholder="Tu término..."/>
+    <!-- SELECTOR -->
+    <div class="proto-selector">
+        <button class="proto-btn active" onclick="setProto('SPIDER', this)">
+            SPIDER
+            <span class="proto-sub">Cualitativa · Mixta</span>
+        </button>
+        <button class="proto-btn" onclick="setProto('PICO', this)">
+            PICO
+            <span class="proto-sub">Cuantitativa · Clínica</span>
+        </button>
+        <button class="proto-btn" onclick="setProto('PICOS', this)">
+            PICOS
+            <span class="proto-sub">PICO + tipo de estudio</span>
+        </button>
     </div>
 
-    <div class="componente">
-        <label>[P] Phenomenon of Interest</label>
-        <p class="descripcion">¿Qué fenómeno se investiga? Ej: burnout laboral, uso de redes sociales</p>
-        <input type="text" th:field="*{phenomenon}" placeholder="Tu término..."/>
+    <div class="info-box" id="info-proto">
+        <strong>SPIDER</strong> — Diseñado para investigación cualitativa y mixta. Ideal para estudios sobre experiencias, percepciones y fenómenos sociales.
     </div>
 
-    <div class="componente">
-        <label>[I] Design</label>
-        <p class="descripcion">¿Qué diseño de investigación se busca? Ej: entrevista, grupo focal</p>
-        <input type="text" th:field="*{design}" placeholder="Tu término..."/>
-    </div>
+    <form th:action="@{/generar}" th:object="${searchRequest}" method="post">
 
-    <div class="componente">
-        <label>[D] Evaluation</label>
-        <p class="descripcion">¿Qué resultado se considera? Ej: calidad de vida, bienestar psicológico</p>
-        <input type="text" th:field="*{evaluation}" placeholder="Tu término..."/>
-    </div>
+        <!-- CAMPO 1: S/P -->
+        <div class="campo" id="campo-1">
+            <div class="campo-header">
+                <span class="campo-letra" id="letra-1">S</span>
+                <span class="campo-label" id="label-1">Sample</span>
+            </div>
+            <p class="campo-desc" id="desc-1">¿Quién es la población o grupo de estudio? Ej: adolescentes, profesionales sanitarios</p>
+            <input type="text" th:field="*{sample}" placeholder="Tu término o términos..."/>
+        </div>
 
-    <div class="componente">
-        <label>[E] Research type</label>
-        <p class="descripcion">¿Qué tipo de investigación? Ej: cualitativa, cuantitativa, mixta</p>
-        <input type="text" th:field="*{researchType}" placeholder="Tu término..."/>
-    </div>
+        <!-- CAMPO 2: P/I -->
+        <div class="campo" id="campo-2">
+            <div class="campo-header">
+                <span class="campo-letra" id="letra-2">P</span>
+                <span class="campo-label" id="label-2">Phenomenon of Interest</span>
+            </div>
+            <p class="campo-desc" id="desc-2">¿Qué fenómeno o intervención se investiga? Ej: burnout laboral, terapia cognitivo-conductual</p>
+            <input type="text" th:field="*{phenomenon}" placeholder="Tu término o términos..."/>
+        </div>
 
-    <div class="componente">
-        <label>[R] Research <span style="font-weight:normal; color:#888">(opcional)</span></label>
-        <p class="descripcion">¿Alguna restricción? Ej: España, 2010-2024, estudios en español</p>
-        <input type="text" th:field="*{research}" placeholder="Tu término..."/>
-    </div>
+        <!-- CAMPO 3: I/C -->
+        <div class="campo" id="campo-3">
+            <div class="campo-header">
+                <span class="campo-letra" id="letra-3">I</span>
+                <span class="campo-label" id="label-3">Design</span>
+            </div>
+            <p class="campo-desc" id="desc-3">¿Qué diseño de investigación se busca? Ej: entrevista, grupo focal, ensayo clínico</p>
+            <input type="text" th:field="*{design}" placeholder="Tu término o términos..."/>
+        </div>
 
-    <button type="submit">Generar cadena de búsqueda →</button>
+        <!-- CAMPO 4: D/O -->
+        <div class="campo" id="campo-4">
+            <div class="campo-header">
+                <span class="campo-letra" id="letra-4">D</span>
+                <span class="campo-label" id="label-4">Evaluation</span>
+            </div>
+            <p class="campo-desc" id="desc-4">¿Qué resultado o medida se considera? Ej: calidad de vida, bienestar, reducción del dolor</p>
+            <input type="text" th:field="*{evaluation}" placeholder="Tu término o términos..."/>
+        </div>
 
-</form>
+        <!-- CAMPO 5: E/S -->
+        <div class="campo" id="campo-5">
+            <div class="campo-header">
+                <span class="campo-letra" id="letra-5">E</span>
+                <span class="campo-label" id="label-5">Research type</span>
+            </div>
+            <p class="campo-desc" id="desc-5">¿Qué tipo de investigación se incluye? Ej: cualitativa, cuantitativa, mixta</p>
+            <input type="text" th:field="*{researchType}" placeholder="Tu término o términos..."/>
+        </div>
+
+        <!-- CAMPO 6: R (opcional, solo SPIDER) -->
+        <div class="campo opcional" id="campo-6">
+            <div class="campo-header">
+                <span class="campo-letra" id="letra-6" style="background:#f0f0f0; color:#888;">R</span>
+                <span class="campo-label" id="label-6">Research</span>
+                <span class="campo-opcional-tag">(opcional)</span>
+            </div>
+            <p class="campo-desc" id="desc-6">¿Alguna restricción de contexto, periodo o idioma? Ej: España, 2010-2024</p>
+            <input type="text" th:field="*{research}" placeholder="Tu término o términos..."/>
+        </div>
+
+        <button type="submit" class="btn-generar">
+            Generar cadenas de búsqueda →
+        </button>
+
+    </form>
+</main>
+
+<script>
+    const protocolos = {
+        SPIDER: {
+            info: '<strong>SPIDER</strong> — Diseñado para investigación cualitativa y mixta. Ideal para estudios sobre experiencias, percepciones y fenómenos sociales.',
+            campos: [
+                { letra: 'S', label: 'Sample', desc: '¿Quién es la población o grupo de estudio? Ej: adolescentes, profesionales sanitarios' },
+                { letra: 'P', label: 'Phenomenon of Interest', desc: '¿Qué fenómeno se investiga? Ej: burnout laboral, experiencia del duelo' },
+                { letra: 'I', label: 'Design', desc: '¿Qué diseño de investigación se busca? Ej: entrevista, grupo focal, etnografía' },
+                { letra: 'D', label: 'Evaluation', desc: '¿Qué resultado o medida se considera? Ej: calidad de vida, bienestar psicológico' },
+                { letra: 'E', label: 'Research type', desc: '¿Qué tipo de investigación? Ej: cualitativa, cuantitativa, mixta', visible: true },
+                { letra: 'R', label: 'Research', desc: '¿Alguna restricción de contexto, periodo o idioma? Ej: España, 2010-2024', visible: true, opcional: true },
+            ]
+        },
+        PICO: {
+            info: '<strong>PICO</strong> — Diseñado para investigación cuantitativa y clínica. Ideal para estudios sobre eficacia de intervenciones y comparaciones entre tratamientos.',
+            campos: [
+                { letra: 'P', label: 'Population', desc: '¿Quién es la población de estudio? Ej: adultos mayores, pacientes con diabetes' },
+                { letra: 'I', label: 'Intervention', desc: '¿Qué intervención o exposición se estudia? Ej: terapia cognitivo-conductual, ejercicio físico' },
+                { letra: 'C', label: 'Comparison', desc: '¿Con qué se compara la intervención? Ej: placebo, tratamiento estándar, grupo control' },
+                { letra: 'O', label: 'Outcome', desc: '¿Qué resultado se mide? Ej: reducción del dolor, calidad de vida, tasa de mortalidad' },
+                { letra: '', label: '', desc: '', visible: false },
+                { letra: '', label: '', desc: '', visible: false },
+            ]
+        },
+        PICOS: {
+            info: '<strong>PICOS</strong> — Versión extendida de PICO que incluye el tipo de estudio. Recomendado cuando el diseño metodológico es un criterio de inclusión clave.',
+            campos: [
+                { letra: 'P', label: 'Population', desc: '¿Quién es la población de estudio? Ej: adultos mayores, pacientes con diabetes' },
+                { letra: 'I', label: 'Intervention', desc: '¿Qué intervención o exposición se estudia? Ej: terapia cognitivo-conductual, ejercicio físico' },
+                { letra: 'C', label: 'Comparison', desc: '¿Con qué se compara la intervención? Ej: placebo, tratamiento estándar, grupo control' },
+                { letra: 'O', label: 'Outcome', desc: '¿Qué resultado se mide? Ej: reducción del dolor, calidad de vida, tasa de mortalidad' },
+                { letra: 'S', label: 'Study type', desc: '¿Qué tipo de estudio se incluye? Ej: ensayo clínico aleatorizado, revisión sistemática, cohorte', visible: true },
+                { letra: '', label: '', desc: '', visible: false },
+            ]
+        }
+    };
+
+    function setProto(proto, btn) {
+        // Actualizar botones
+        document.querySelectorAll('.proto-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Actualizar info
+        document.getElementById('info-proto').innerHTML = protocolos[proto].info;
+
+        // Actualizar campos
+        const campos = protocolos[proto].campos;
+        for (let i = 0; i < 6; i++) {
+            const campo = document.getElementById('campo-' + (i+1));
+            const c = campos[i];
+
+            if (!c.letra) {
+                campo.classList.add('oculto');
+                continue;
+            }
+
+            campo.classList.remove('oculto');
+            campo.classList.toggle('opcional', !!c.opcional);
+            document.getElementById('letra-' + (i+1)).textContent = c.letra;
+            document.getElementById('label-' + (i+1)).textContent = c.label;
+            document.getElementById('desc-'  + (i+1)).textContent = c.desc;
+        }
+    }
+</script>
 
 </body>
 </html>
