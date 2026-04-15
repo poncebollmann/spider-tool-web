@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 public class SpiderController {
 
@@ -24,28 +28,47 @@ public class SpiderController {
     @PostMapping("/generar")
     public String generar(@ModelAttribute SearchRequest request, Model model) {
 
-        // Construir la cadena booleana con los campos del formulario
-        StringBuilder cadena = new StringBuilder();
+        List<String> bloques = new ArrayList<>();
 
-        agregarTermino(cadena, request.getSample());
-        agregarTermino(cadena, request.getPhenomenon());
-        agregarTermino(cadena, request.getDesign());
-        agregarTermino(cadena, request.getEvaluation());
-        agregarTermino(cadena, request.getResearchType());
+        agregarBloque(bloques, request.getSample());
+        agregarBloque(bloques, request.getPhenomenon());
+        agregarBloque(bloques, request.getDesign());
+        agregarBloque(bloques, request.getEvaluation());
+        agregarBloque(bloques, request.getResearchType());
 
         if (request.getResearch() != null && !request.getResearch().isBlank()) {
-            agregarTermino(cadena, request.getResearch());
+            agregarBloque(bloques, request.getResearch());
         }
 
-        model.addAttribute("cadena", cadena.toString());
+        // Cadena genérica
+        String cadenaGenerica = String.join(" AND ", bloques);
+
+        // Cadena Scopus
+        String cadenaScopus = bloques.stream()
+                .map(b -> "TITLE-ABS-KEY(" + b + ")")
+                .collect(Collectors.joining(" AND "));
+
+        // Cadena Web of Science
+        String cadenaWoS = bloques.stream()
+                .map(b -> "TS=(" + b + ")")
+                .collect(Collectors.joining(" AND "));
+
+        // Cadena PubMed
+        String cadenaPubMed = bloques.stream()
+                .map(b -> "(" + b.replaceAll("([\\wáéíóúüñÁÉÍÓÚÜÑ]+)", "$1[tw]") + ")")
+                .collect(Collectors.joining(" AND "));
+
+        model.addAttribute("cadena",        cadenaGenerica);
+        model.addAttribute("cadenaScopus",  cadenaScopus);
+        model.addAttribute("cadenaWoS",     cadenaWoS);
+        model.addAttribute("cadenaPubMed",  cadenaPubMed);
         model.addAttribute("searchRequest", request);
         return "resultado";
     }
 
-    private void agregarTermino(StringBuilder cadena, String termino) {
+    private void agregarBloque(List<String> bloques, String termino) {
         if (termino != null && !termino.isBlank()) {
-            if (cadena.length() > 0) cadena.append(" AND ");
-            cadena.append(termino.trim());
+            bloques.add(termino.trim());
         }
     }
 }

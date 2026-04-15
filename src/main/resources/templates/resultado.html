@@ -2,102 +2,187 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Resultado — SPIDER Protocol Tool</title>
+  <title>Resultado — Protocolo de búsqueda</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 700px;
-      margin: 40px auto;
-      padding: 0 20px;
-      background-color: #f5f5f5;
-    }
-    h1 { color: #1565C0; border-bottom: 2px solid #1565C0; padding-bottom: 10px; }
-    h2 { color: #263238; font-size: 16px; margin-top: 30px; }
-    .cadena {
-      background: white;
-      border-left: 4px solid #2E7D32;
-      padding: 16px;
-      border-radius: 6px;
-      font-family: monospace;
-      font-size: 14px;
-      word-break: break-word;
-      margin: 10px 0 24px 0;
-    }
-    .componentes {
-      background: white;
-      padding: 16px;
-      border-radius: 6px;
-      border-left: 4px solid #1565C0;
-      margin-bottom: 24px;
-    }
-    .componente-fila {
-      padding: 6px 0;
-      border-bottom: 1px solid #f0f0f0;
-      font-size: 14px;
-    }
-    .componente-fila:last-child { border-bottom: none; }
-    .letra {
-      font-weight: bold;
-      color: #1565C0;
-      display: inline-block;
-      width: 30px;
-    }
-    .botones { margin-top: 20px; }
-    a.boton {
-      display: inline-block;
-      background-color: #1565C0;
-      color: white;
-      padding: 10px 22px;
-      border-radius: 4px;
-      text-decoration: none;
-      font-size: 14px;
-      margin-right: 10px;
-    }
-    a.boton-secondary {
-      background-color: #607D8B;
-    }
-    a.boton:hover { opacity: 0.9; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background-color: #f5f5f5; color: #263238; }
+    .topnav { background: white; border-bottom: 1px solid #eee; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 100; }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark { width: 30px; height: 30px; background: #534AB7; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .logo-mark svg { width: 16px; height: 16px; fill: white; }
+    .logo-name { font-size: 15px; font-weight: bold; color: #263238; }
+    .logo-badge { font-size: 10px; background: #EEEDFE; color: #534AB7; padding: 2px 8px; border-radius: 99px; }
+    .nav-link { font-size: 13px; padding: 7px 14px; border-radius: 6px; color: #555; text-decoration: none; }
+    .nav-link:hover { background: #f5f5f5; }
+    main { max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; }
+    h1 { font-size: 22px; font-weight: bold; color: #263238; margin-bottom: 6px; }
+    .subtitulo { font-size: 13px; color: #888; margin-bottom: 28px; }
+
+    /* COMPONENTES */
+    .componentes { background: white; border: 1px solid #eee; border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+    .componentes h2 { font-size: 13px; font-weight: bold; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; }
+    .comp-fila { display: flex; align-items: baseline; gap: 12px; padding: 6px 0; border-bottom: 1px solid #f5f5f5; font-size: 14px; }
+    .comp-fila:last-child { border-bottom: none; }
+    .comp-letra { font-weight: bold; color: #534AB7; width: 28px; flex-shrink: 0; }
+    .comp-nombre { color: #888; font-size: 12px; width: 160px; flex-shrink: 0; }
+    .comp-valor { color: #263238; }
+
+    /* CADENAS */
+    .cadenas { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
+    .cadena-card { background: white; border: 1px solid #eee; border-radius: 12px; overflow: hidden; }
+    .cadena-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid #f5f5f5; }
+    .cadena-db { display: flex; align-items: center; gap: 8px; }
+    .cadena-badge { font-size: 11px; font-weight: bold; padding: 3px 10px; border-radius: 99px; }
+    .badge-generica { background: #EEEDFE; color: #534AB7; }
+    .badge-scopus   { background: #FAECE7; color: #993C1D; }
+    .badge-wos      { background: #E1F5EE; color: #0F6E56; }
+    .badge-pubmed   { background: #FAEEDA; color: #854F0B; }
+    .cadena-desc { font-size: 11px; color: #aaa; }
+    .btn-copiar { font-size: 11px; padding: 5px 12px; border-radius: 6px; border: 1px solid #ddd; background: white; cursor: pointer; color: #555; }
+    .btn-copiar:hover { background: #f5f5f5; }
+    .btn-copiar.copiado { background: #E1F5EE; color: #0F6E56; border-color: #0F6E56; }
+    .cadena-body { padding: 14px 16px; font-family: monospace; font-size: 12px; color: #263238; line-height: 1.6; word-break: break-word; background: #FAFAFA; }
+
+    /* ACCIONES */
+    .acciones { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-primary { padding: 11px 24px; border-radius: 6px; background: #534AB7; color: white; border: none; cursor: pointer; font-size: 14px; font-weight: bold; text-decoration: none; }
+    .btn-primary:hover { background: #4A148C; }
+    .btn-outline { padding: 11px 24px; border-radius: 6px; background: white; color: #263238; border: 1px solid #ddd; cursor: pointer; font-size: 14px; text-decoration: none; }
+    .btn-outline:hover { border-color: #aaa; }
+
+    /* INFO */
+    .info-box { background: #EEEDFE; border-radius: 8px; padding: 12px 16px; font-size: 12px; color: #3C3489; margin-bottom: 24px; line-height: 1.6; }
   </style>
 </head>
 <body>
 
-<h1>Resultado de búsqueda</h1>
+<nav class="topnav">
+  <a class="logo" href="/">
+    <div class="logo-mark">
+      <svg viewBox="0 0 16 16"><path d="M2 2h12v2H2V2zm0 4h8v2H2V6zm0 4h5v2H2v-2z"/></svg>
+    </div>
+    <span class="logo-name">SysReview Tool</span>
+    <span class="logo-badge">PRISMA 2020</span>
+  </a>
+  <div style="display:flex; gap:4px;">
+    <a class="nav-link" href="/spider">← Nueva búsqueda</a>
+    <a class="nav-link" href="/prisma">PRISMA</a>
+    <a class="nav-link" href="/zotero">Zotero</a>
+  </div>
+</nav>
 
-<h2>Componentes introducidos</h2>
-<div class="componentes">
-  <div class="componente-fila">
-    <span class="letra">[S]</span>
-    <span th:text="${searchRequest.sample}">—</span>
-  </div>
-  <div class="componente-fila">
-    <span class="letra">[P]</span>
-    <span th:text="${searchRequest.phenomenon}">—</span>
-  </div>
-  <div class="componente-fila">
-    <span class="letra">[I]</span>
-    <span th:text="${searchRequest.design}">—</span>
-  </div>
-  <div class="componente-fila">
-    <span class="letra">[D]</span>
-    <span th:text="${searchRequest.evaluation}">—</span>
-  </div>
-  <div class="componente-fila">
-    <span class="letra">[E]</span>
-    <span th:text="${searchRequest.researchType}">—</span>
-  </div>
-  <div class="componente-fila" th:if="${searchRequest.research != null and !#strings.isEmpty(searchRequest.research)}">
-    <span class="letra">[R]</span>
-    <span th:text="${searchRequest.research}">—</span>
-  </div>
-</div>
+<main>
+  <h1>Cadenas de búsqueda generadas</h1>
+  <p class="subtitulo">Copia la cadena correspondiente a cada base de datos y pégala directamente en el buscador.</p>
 
-<h2>Cadena de búsqueda booleana</h2>
-<div class="cadena" th:text="${cadena}"></div>
+  <!-- COMPONENTES -->
+  <div class="componentes">
+    <h2>Componentes del protocolo</h2>
+    <div th:if="${searchRequest.sample != null and !searchRequest.sample.isEmpty()}" class="comp-fila">
+      <span class="comp-letra">S / P</span>
+      <span class="comp-nombre">Sample / Population</span>
+      <span class="comp-valor" th:text="${searchRequest.sample}"></span>
+    </div>
+    <div th:if="${searchRequest.phenomenon != null and !searchRequest.phenomenon.isEmpty()}" class="comp-fila">
+      <span class="comp-letra">P / I</span>
+      <span class="comp-nombre">Phenomenon / Intervention</span>
+      <span class="comp-valor" th:text="${searchRequest.phenomenon}"></span>
+    </div>
+    <div th:if="${searchRequest.design != null and !searchRequest.design.isEmpty()}" class="comp-fila">
+      <span class="comp-letra">I / C</span>
+      <span class="comp-nombre">Design / Comparison</span>
+      <span class="comp-valor" th:text="${searchRequest.design}"></span>
+    </div>
+    <div th:if="${searchRequest.evaluation != null and !searchRequest.evaluation.isEmpty()}" class="comp-fila">
+      <span class="comp-letra">D / O</span>
+      <span class="comp-nombre">Evaluation / Outcome</span>
+      <span class="comp-valor" th:text="${searchRequest.evaluation}"></span>
+    </div>
+    <div th:if="${searchRequest.researchType != null and !searchRequest.researchType.isEmpty()}" class="comp-fila">
+      <span class="comp-letra">E / S</span>
+      <span class="comp-nombre">Research type / Study type</span>
+      <span class="comp-valor" th:text="${searchRequest.researchType}"></span>
+    </div>
+    <div th:if="${searchRequest.research != null and !searchRequest.research.isEmpty()}" class="comp-fila">
+      <span class="comp-letra">R</span>
+      <span class="comp-nombre">Restricciones</span>
+      <span class="comp-valor" th:text="${searchRequest.research}"></span>
+    </div>
+  </div>
 
-<div class="botones">
-  <a href="/" class="boton">← Nueva búsqueda</a>
-  <a href="/" class="boton boton-secondary">Inicio</a>
-</div>
+  <div class="info-box">
+    Cada cadena está adaptada a la sintaxis oficial de la base de datos. Cópialas con el botón y pégalas directamente en el campo de búsqueda avanzada.
+  </div>
+
+  <!-- CADENAS -->
+  <div class="cadenas">
+
+    <div class="cadena-card">
+      <div class="cadena-header">
+        <div class="cadena-db">
+          <span class="cadena-badge badge-generica">Genérica</span>
+          <span class="cadena-desc">Para cualquier base de datos</span>
+        </div>
+        <button class="btn-copiar" onclick="copiar(this, 'cadena-generica')">Copiar</button>
+      </div>
+      <div class="cadena-body" id="cadena-generica" th:text="${cadena}"></div>
+    </div>
+
+    <div class="cadena-card">
+      <div class="cadena-header">
+        <div class="cadena-db">
+          <span class="cadena-badge badge-scopus">Scopus</span>
+          <span class="cadena-desc">TITLE-ABS-KEY — Elsevier</span>
+        </div>
+        <button class="btn-copiar" onclick="copiar(this, 'cadena-scopus')">Copiar</button>
+      </div>
+      <div class="cadena-body" id="cadena-scopus" th:text="${cadenaScopus}"></div>
+    </div>
+
+    <div class="cadena-card">
+      <div class="cadena-header">
+        <div class="cadena-db">
+          <span class="cadena-badge badge-wos">Web of Science</span>
+          <span class="cadena-desc">TS= Topic Search — Clarivate</span>
+        </div>
+        <button class="btn-copiar" onclick="copiar(this, 'cadena-wos')">Copiar</button>
+      </div>
+      <div class="cadena-body" id="cadena-wos" th:text="${cadenaWoS}"></div>
+    </div>
+
+    <div class="cadena-card">
+      <div class="cadena-header">
+        <div class="cadena-db">
+          <span class="cadena-badge badge-pubmed">PubMed</span>
+          <span class="cadena-desc">[tw] Text Word — NCBI</span>
+        </div>
+        <button class="btn-copiar" onclick="copiar(this, 'cadena-pubmed')">Copiar</button>
+      </div>
+      <div class="cadena-body" id="cadena-pubmed" th:text="${cadenaPubMed}"></div>
+    </div>
+
+  </div>
+
+  <div class="acciones">
+    <a class="btn-primary" href="/spider">← Nueva búsqueda</a>
+    <a class="btn-outline" href="/prisma">Ir al diagrama PRISMA</a>
+    <a class="btn-outline" href="/zotero">Ir a Zotero</a>
+  </div>
+</main>
+
+<script>
+  function copiar(btn, id) {
+    const texto = document.getElementById(id).textContent;
+    navigator.clipboard.writeText(texto).then(() => {
+      btn.textContent = '✓ Copiado';
+      btn.classList.add('copiado');
+      setTimeout(() => {
+        btn.textContent = 'Copiar';
+        btn.classList.remove('copiado');
+      }, 2000);
+    });
+  }
+</script>
 
 </body>
 </html>
